@@ -13,14 +13,15 @@ namespace EM.WebApi.Core.Controllers
         [HttpGet]
         public async Task<IEnumerable<SearchResultResponse>> GetSearchResult(
             [FromQuery(Name = "query")] string query, 
-            [FromQuery(Name = "filters")] string[] filters)
+            [FromQuery(Name = "filters")] string[] category)
         {
             var searchResult = new List<SearchResultResponse>();
             searchResult.Add(new SearchResultResponse
             {
                 Title = "Search offer result Title",
                 Url = "https://offer.ru/",
-                Description = "Search offer result description"
+                Description = "Search offer result description", 
+                Category = "Test" 
             });
             
             return searchResult;
