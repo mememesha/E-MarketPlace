@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "EM.WebApi.Core": {
+      "commandName": "Project",
+      "launchUrl": "swagger/index.html",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:7890",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
