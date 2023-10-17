@@ -77,6 +77,13 @@ namespace EM.IdentityServer4
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
+            services.AddCors(o => o.AddPolicy("MyPolicy", corsPolicyBuilder =>
+            {
+                corsPolicyBuilder.WithOrigins("https://localhost:7250")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
@@ -104,6 +111,8 @@ namespace EM.IdentityServer4
 
             app.UseStaticFiles();
 
+            app.UseCors("MyPolicy");
+            
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();
