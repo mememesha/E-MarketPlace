@@ -56,7 +56,7 @@ namespace EM.IdentityServer4
 
                 new Client
                 {
-                    ClientId = "em.blazor",
+                    ClientId = "em.ui.blazor",
                     ClientName = "Electronic Market Site",
                     RequireClientSecret = false,
 
