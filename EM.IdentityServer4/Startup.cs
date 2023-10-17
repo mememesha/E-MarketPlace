@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System.Reflection;
 using IdentityServer4;
 using EM.IdentityServer4.Data;
 using EM.IdentityServer4.Models;
@@ -47,10 +48,25 @@ namespace EM.IdentityServer4
                     // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                     options.EmitStaticAudienceClaim = true;
                 })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients)
+                // .AddInMemoryIdentityResources(Config.IdentityResources)
+                // .AddInMemoryApiScopes(Config.ApiScopes)
+                // .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
+
+            // Use EF Core to store server settings information
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            var settingDbConnectionString = Configuration.GetConnectionString("ServerSettingsConnection");
+            builder.AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlite(settingDbConnectionString,
+                        sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlite(settingDbConnectionString,
+                        sql => sql.MigrationsAssembly(migrationsAssembly));
+                });
+
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
