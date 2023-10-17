@@ -40,7 +40,8 @@ namespace EM.IdentityServer4
 
             try
             {
-                var seed = args.Contains("/seed");
+                // var seed = args.Contains("/seed");
+                var seed = true;
                 if (seed)
                 {
                     args = args.Except(new[] {"/seed"}).ToArray();
@@ -55,7 +56,6 @@ namespace EM.IdentityServer4
                     var connectionString = config.GetConnectionString("DefaultConnection");
                     SeedData.EnsureSeedData(connectionString);
                     Log.Information("Done seeding database.");
-                    return 0;
                 }
 
                 Log.Information("Starting host...");

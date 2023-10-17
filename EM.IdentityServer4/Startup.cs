@@ -14,11 +14,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-#if DEBUG
+// #if DEBUG
 using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
-#endif
+// #endif
 
 namespace EM.IdentityServer4
 {
@@ -79,7 +79,7 @@ namespace EM.IdentityServer4
 
             services.AddCors(o => o.AddPolicy("MyPolicy", corsPolicyBuilder =>
             {
-                corsPolicyBuilder.WithOrigins("https://localhost:7250")
+                corsPolicyBuilder.WithOrigins("http://localhost:7250")
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             }));
@@ -99,9 +99,9 @@ namespace EM.IdentityServer4
 
         public void Configure(IApplicationBuilder app)
         {
-#if DEBUG
+// #if DEBUG
             InitializeDatabase(app);
-#endif
+// #endif
             
             if (Environment.IsDevelopment())
             {
@@ -119,7 +119,7 @@ namespace EM.IdentityServer4
             app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
         }
 
-#if DEBUG
+// #if DEBUG
         private void InitializeDatabase(IApplicationBuilder app)
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
@@ -159,6 +159,6 @@ namespace EM.IdentityServer4
                 }
             }
         }
-#endif
+// #endif
     }
 }
