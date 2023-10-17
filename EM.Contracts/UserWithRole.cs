@@ -1,0 +1,9 @@
+﻿namespace EM.Contracts
+{
+    public class UserWithRole : EntityBase
+    {
+        public virtual Guid OrganizationId { get; set; }
+        public virtual UserAbility Role { get; set; }
+        public virtual User User { get; set; }
+    }
+}
