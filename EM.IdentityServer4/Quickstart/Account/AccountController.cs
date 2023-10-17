@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EM.IdentityServer4.Quickstart.Account;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -342,6 +343,43 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             return vm;
+        }
+
+        [HttpGet]
+        public IActionResult Register(string returnUrl)
+        {
+            var rm = new RegisterViewModel
+            {
+                ReturnUrl = returnUrl
+            };
+            
+            return View(rm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser {Email = model.Email, UserName = model.UserName};
+                // добавляем пользователя
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    // установка куки
+                    await _signInManager.SignInAsync(user, false);
+                    return Redirect(model.ReturnUrl);
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+
+            return View(model);
         }
     }
 }
