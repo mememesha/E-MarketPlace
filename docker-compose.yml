@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  frontend:
+    build: EM.UI.Blazor
+    ports:
+      - "7250:80"
+  is4:
+    build: EM.IdentityServer4
+    ports:
+      - "10001:10001" 
