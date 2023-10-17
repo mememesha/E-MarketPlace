@@ -1,17 +1,14 @@
 version: '3.4'
 
 services:
-  
-  blazor:
-    build: EM.UI.Blazor
-    ports:
-      - "7250:80"
-      
   webapi:
     build: EM.WebApi.Core
     ports:
       - "7890:7890"
-
+  blazor:
+    build: EM.UI.Blazor
+    ports:
+      - "7250:80"
   is4:
     build: EM.IdentityServer4
     ports:
