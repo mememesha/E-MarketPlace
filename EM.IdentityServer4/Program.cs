@@ -41,7 +41,7 @@ namespace EM.IdentityServer4
             try
             {
                 // var seed = args.Contains("/seed");
-                var seed = false;
+                var seed = true;
                 if (seed)
                 {
                     args = args.Except(new[] {"/seed"}).ToArray();
