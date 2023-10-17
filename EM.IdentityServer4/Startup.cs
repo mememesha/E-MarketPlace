@@ -37,8 +37,11 @@ namespace EM.IdentityServer4
         {
             services.AddControllersWithViews();
 
+            var postgresConnectionString = Configuration.GetConnectionString("PostgresConnection");
+            
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(postgresConnectionString));
+            // options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -61,15 +64,16 @@ namespace EM.IdentityServer4
 
             // Use EF Core to store server settings information
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            var settingDbConnectionString = Configuration.GetConnectionString("ServerSettingsConnection");
+            // var settingDbConnectionString = Configuration.GetConnectionString("ServerSettingsConnection");
+            
             builder.AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlite(settingDbConnectionString,
+                    options.ConfigureDbContext = b => b.UseNpgsql(postgresConnectionString,
                         sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlite(settingDbConnectionString,
+                    options.ConfigureDbContext = b => b.UseNpgsql(postgresConnectionString,
                         sql => sql.MigrationsAssembly(migrationsAssembly));
                 });
 

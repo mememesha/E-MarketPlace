@@ -41,7 +41,7 @@ namespace EM.IdentityServer4
             try
             {
                 // var seed = args.Contains("/seed");
-                var seed = true;
+                var seed = false;
                 if (seed)
                 {
                     args = args.Except(new[] {"/seed"}).ToArray();
@@ -53,8 +53,9 @@ namespace EM.IdentityServer4
                 {
                     Log.Information("Seeding database...");
                     var config = host.Services.GetRequiredService<IConfiguration>();
-                    var connectionString = config.GetConnectionString("DefaultConnection");
-                    SeedData.EnsureSeedData(connectionString);
+                    // var connectionString = config.GetConnectionString("DefaultConnection");
+                    var postgresConnectionString = config.GetConnectionString("PostgresConnection");
+                    SeedData.EnsureSeedData(postgresConnectionString);
                     Log.Information("Done seeding database.");
                 }
 
