@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System.Reflection;
 using IdentityServer4;
 using EM.IdentityServer4.Data;
@@ -41,7 +40,6 @@ namespace EM.IdentityServer4
             
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(postgresConnectionString));
-            // options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -57,15 +55,11 @@ namespace EM.IdentityServer4
                     // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                     options.EmitStaticAudienceClaim = true;
                 })
-                // .AddInMemoryIdentityResources(Config.IdentityResources)
-                // .AddInMemoryApiScopes(Config.ApiScopes)
-                // .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
 
             // Use EF Core to store server settings information
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            // var settingDbConnectionString = Configuration.GetConnectionString("ServerSettingsConnection");
-            
+
             builder.AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = b => b.UseNpgsql(postgresConnectionString,
@@ -80,14 +74,7 @@ namespace EM.IdentityServer4
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
-
-            services.AddCors(o => o.AddPolicy("MyPolicy", corsPolicyBuilder =>
-            {
-                corsPolicyBuilder.WithOrigins("http://localhost:7250")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
-
+            
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
@@ -115,8 +102,6 @@ namespace EM.IdentityServer4
 
             app.UseStaticFiles();
 
-            app.UseCors("MyPolicy");
-            
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();
