@@ -1,11 +1,11 @@
 version: '3.4'
 
 services:
-  
+
   blazor:
     build: EM.UI.Blazor
     ports:
-      - "7250:80"
+      - "7250:443"
       
   webapi:
     build: EM.WebApi.Core
@@ -15,7 +15,7 @@ services:
   is4:
     build: EM.IdentityServer4
     ports:
-      - "10001:10001" 
+      - "7890:7890"
 
   postgres:
     image: postgres:14-alpine
@@ -25,6 +25,17 @@ services:
       POSTGRES_PASSWORD: "password"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ~/docker:/var/lib/postgresql/data
+      - postgres-volume:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  is4:
+    build: EM.IdentityServer4
+    ports:
+      - "10001:10001"
+    environment:
+      ConnectionStrings__PostgresConnection: "Server=localhost;Port=5432;Database=is4;Username=user;Password=password"
+      
+volumes:
+  postgres-volume:
+    external: false
