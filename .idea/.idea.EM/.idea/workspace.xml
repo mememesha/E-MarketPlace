@@ -9,7 +9,7 @@
     <projectFile profileName="EM.WebApi.Core">EM.WebApi.Core/EM.WebApi.Core.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d676f5c0-3287-4989-a5f3-feb67be752a8" name="Changes" comment="" />
+    <list default="true" id="47def486-e55d-4905-881d-bdbbc7d93558" name="Changes" comment="Add Dto project,Add WebApiOptions class to Dto, UI dev continue" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +21,9 @@
         <entry key="$PROJECT_DIR$" value="experemental" />
       </map>
     </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.IdentityServer4/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="2Wtm3yyMBmAbEHldPHbtiGXQvN3" />
   <component name="ProjectLevelVcsManager">
