@@ -7,9 +7,10 @@
     <projectFile profileName="EM.IdentityServer4">EM.IdentityServer4/EM.IdentityServer4.csproj</projectFile>
     <projectFile profileName="SelfHost">EM.IdentityServer4/EM.IdentityServer4.csproj</projectFile>
     <projectFile profileName="EM.WebApi.Core">EM.WebApi.Core/EM.WebApi.Core.csproj</projectFile>
+    <projectFile profileName="EM.MicroService.Location">EM.MicroService.Location/EM.MicroService.Location.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47def486-e55d-4905-881d-bdbbc7d93558" name="Changes" comment="Add Dto project,Add WebApiOptions class to Dto, UI dev continue" />
+    <list default="true" id="47def486-e55d-4905-881d-bdbbc7d93558" name="Changes" comment="fix after review" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,12 +19,24 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="experemental" />
+        <entry key="$PROJECT_DIR$" value="UI" />
       </map>
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.IdentityServer4/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EM.WebApi.Core/Controllers/SearchController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EM.WebApi.Core/Models/SearchDocument.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="2Wtm3yyMBmAbEHldPHbtiGXQvN3" />
   <component name="ProjectLevelVcsManager">
@@ -328,6 +341,7 @@
     <MESSAGE value="Update Migrations for postgres" />
     <MESSAGE value="Use postgres instead of sqlite" />
     <MESSAGE value="&#10;Add docker-compose.yml file with postgres db" />
-    <option name="LAST_COMMIT_MESSAGE" value="&#10;Add docker-compose.yml file with postgres db" />
+    <MESSAGE value="fix after review" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix after review" />
   </component>
 </project>
