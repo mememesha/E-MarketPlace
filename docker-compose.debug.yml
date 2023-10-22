@@ -12,7 +12,18 @@ services:
       - postrges_volume:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  elasticsearch:
+    image: elasticsearch:7.16.3
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - elastic_volume:/usr/share/elasticsearch/data
         
 volumes:
   postrges_volume:
+    external: false
+  elastic_volume:
     external: false
