@@ -12,30 +12,7 @@ services:
       - postrges_volume:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
-  elasticsearch:
-    image: elasticsearch:7.16.3
-    ports:
-      - "9200:9200"
-    environment:
-      - discovery.type=single-node
-    volumes:
-      - elastic_volume:/usr/share/elasticsearch/data
-
-  rabbitmq:
-    container_name: "rabbitmq"
-    image: rabbitmq:3-management
-    ports:
-      # AMQP protocol port
-      - '5672:5672'
-      # HTTP management UI
-      - '15672:15672' 
-    environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
         
 volumes:
   postrges_volume:
-    external: false
-  elastic_volume:
     external: false

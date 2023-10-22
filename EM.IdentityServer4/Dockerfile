@@ -3,7 +3,7 @@ WORKDIR /app
 EXPOSE 10001
 ENV ASPNETCORE_URLS=https://+:10001
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password="password"
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/is4.pfx
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/self-singed.pfx
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src

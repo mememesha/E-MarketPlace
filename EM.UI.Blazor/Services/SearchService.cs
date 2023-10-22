@@ -1,5 +1,3 @@
-using System.Collections.Specialized;
-using System.Web;
 using EM.UI.Blazor.Settings;
 using Microsoft.Extensions.Options;
 
@@ -9,48 +7,18 @@ public class SearchService
 {
     private readonly IOptions<WebApiOptions> _options;
 
-    private readonly HttpClient _client;
-
-    private string? SearchPath => _options.Value.Ip + _options.Value.SearchPath;
-
     public string? Query { get; set; }
 
-    public string? Category { get; set; }
+    public string? Filter { get; set; }
 
-    public string? Location { get; set; }
+    public string? SearchPath => _options.Value.Ip + _options.Value.SearchPath;
 
     public event Action? OnSearch;
 
-    public SearchService(IOptions<WebApiOptions> options, HttpClient client)
+    public SearchService(IOptions<WebApiOptions> options)
     {
         _options = options;
-        _client = client;
     }
     
-    public void OnSearchExecute() => OnSearch?.Invoke();
-
-    public async Task<string?> GetSearchAsync()
-    {
-        var response = await _client.GetAsync(SearchPath! + GetQuery());
-        
-        if (!response.IsSuccessStatusCode)
-            return null;
-
-        return await response.Content.ReadAsStringAsync();
-    }
-
-    public NameValueCollection GetQuery()
-    {
-        var query = HttpUtility.ParseQueryString(string.Empty);
-        
-        query["query"] = Query;
-
-        if (!string.IsNullOrEmpty(Category))
-            query["category"] = Category;
-
-        if (!string.IsNullOrEmpty(Location))
-            query["location"] = Location;
-
-        return query;
-    }
+    public void SearchExecute() => OnSearch?.Invoke();
 }

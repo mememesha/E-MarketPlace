@@ -1,89 +1,31 @@
-@using EM.UI.Blazor.Services
+@using System.Net.Http.Headers
+@using System.Web
 @using EM.UI.Blazor.Settings
-@using Microsoft.Extensions.Options
+@using EM.UI.Blazor.Services
 
 @inject NavigationManager _navigationManager
 @inject SearchService _searchService
-@inject LocationService _locationService
-@inject IOptions<WebApiOptions> _options
 
 <div class="input-group">
-    <select class="form-select d-md-block d-none" @bind="_searchService.Category" style="max-width: 200px;">
-        @if (_categories != null)
-        {
-            @foreach (var (key, value) in _categories!)
-            {
-                <option value="@key">@value</option>
-            }
-        }
-        else
-        {
-            <option>Загрузка...</option>
-        }
-    </select>
-    <input type="search" class="form-control" placeholder="Я ищу..." @bind="_searchService.Query" @bind:event="oninput"
-        @onkeypress="OnEnterKeyPress">
-    <div class="input-group-text d-flex d-md-block d-none" style="background-color: #fff; cursor: pointer;" 
-        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        <span class="oi oi-compass pe-1"></span>
-        <label style="cursor: pointer;">
-            @if (_searchService.Location != null)
-            {
-                @_searchService.Location
-            }
-            else
-            {
-                @("Загрузка...")
-            }
-        </label>
-    </div>
-    <button class="btn btn-outline-light" type="button" @onclick="OnSearchButtonClick">Поиск</button>
+    <input type="search" class="form-control" placeholder="Я ищу..." @bind="_searchService.Query">
+    <button class="btn btn-outline-light" type="button" onclick="@OnSearchButtonClick">Поиск</button>
 </div>
 
-
 @code {
-
-    private Dictionary<string, string>? _categories;
-
-    protected override async Task OnInitializedAsync()
-    {
-        
-#if DEBUG
-// Delay в секунду для старта прокси-дебагера в браузере
-// https://docs.microsoft.com/en-us/aspnet/core/blazor/debug?view=aspnetcore-6.0&tabs=visual-studio#troubleshoot=
-await Task.Delay(1000);
-#endif
-
-        _searchService.Location = await _locationService.GetCityAsync();
-
-        var client = new HttpClient();
-
-        var response = await client.GetAsync(_options.Value.Ip + _options.Value.GetAllCategories!);
-
-        if (!response.IsSuccessStatusCode)
-            return;
-
-        _categories = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-
-        if (_categories != null)
-            _searchService.Category = _categories.Keys.First();
-    }
-
-    private void OnEnterKeyPress(KeyboardEventArgs args)
-    {
-        if (args.Key == "Enter")
-            OnSearchButtonClick();
-    }
-
+    
     private void OnSearchButtonClick()
     {
-        if (string.IsNullOrEmpty(_searchService.Query))
+        if(_searchService.Query == null)
             return;
-
+        
         try
         {
-            _navigationManager.NavigateTo("search?" + _searchService.GetQuery());
-            _searchService.OnSearchExecute();
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["query"] = _searchService.Query;
+            if (!string.IsNullOrEmpty(_searchService.Filter))
+                query["filter"] = _searchService.Filter;
+            _navigationManager.NavigateTo("search?" + query);
+            _searchService.SearchExecute();
         }
         catch (Exception e)
         {
@@ -91,5 +33,4 @@ await Task.Delay(1000);
             throw;
         }
     }
-
 }

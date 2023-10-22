@@ -3,8 +3,8 @@
     "EM.WebApi.Core": {
       "commandName": "Project",
       "launchUrl": "swagger/index.html",
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:7890",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:7890",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

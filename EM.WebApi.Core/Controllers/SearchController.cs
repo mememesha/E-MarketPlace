@@ -4,11 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 using EM.WebApi.Core.Models;
-using EM.WebApi.Core.Options;
 using EM.WebApi.Core.Settings.Search;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Nest;
 
 namespace EM.WebApi.Core.Controllers
@@ -17,13 +14,6 @@ namespace EM.WebApi.Core.Controllers
     [Route("api/v1/[controller]")]
     public class SearchController
     {
-        private readonly IOptions<ElasticsearchOptions> _options;
-
-        public SearchController(IOptions<ElasticsearchOptions> options)
-        {
-            _options = options;
-        }
-        
         /// <summary>
         /// Метод апи поиска
         /// </summary>
@@ -31,8 +21,7 @@ namespace EM.WebApi.Core.Controllers
         /// <param name="location">Локация в которой ищем. По дефолту во всех локациях. Но как идея, дефолтное значение из ip из httpcontext</param>
         /// <param name="category">Список категорий в которых ищем, например кантакты, организация, продажи, покупки. По дефолту во всех категориях</param>
         /// <returns></returns>
-        // [HttpGet, Authorize("write-access")]
-        [HttpGet, AllowAnonymous]
+        [HttpGet]
         public async Task<IEnumerable<SearchDocument>> GetSearchResult(
             [FromQuery(Name = "query")] string query,
             [FromQuery(Name = "location")] string? location,
@@ -40,7 +29,7 @@ namespace EM.WebApi.Core.Controllers
         {
             var searchResult = new List<SearchDocument>();
 
-            var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
+            var pool = new SingleNodeConnectionPool(new Uri("http://localhost:9200"));
 
             var settings = new ConnectionSettings(pool)
                 .DefaultMappingFor<SearchDocument>(
@@ -115,7 +104,7 @@ namespace EM.WebApi.Core.Controllers
                 DocumentId = Guid.NewGuid()
             };
 
-            var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
+            var pool = new SingleNodeConnectionPool(new Uri("http://localhost:9200"));
 
             var settings = new ConnectionSettings(pool)
                 .DefaultMappingFor<SearchDocument>(
