@@ -86,6 +86,12 @@ namespace EM.IdentityServer4
                     options.ClientId = "copy client ID from Google here";
                     options.ClientSecret = "copy client secret from Google here";
                 });
+
+            services.AddCors(
+                options => options.AddPolicy("AllowAll",
+                    p => p.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()));
         }
 
         public void Configure(IApplicationBuilder app)
@@ -103,6 +109,9 @@ namespace EM.IdentityServer4
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors("AllowAll");
+            
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
@@ -142,6 +151,16 @@ namespace EM.IdentityServer4
                     foreach (var resource in Config.ApiScopes)
                     {
                         context.ApiScopes.Add(resource.ToEntity());
+                    }
+
+                    context.SaveChanges();
+                }
+
+                if (!context.ApiResources.Any())
+                {
+                    foreach (var resource in Config.ApiResources)
+                    {
+                        context.ApiResources.Add(resource.ToEntity());
                     }
 
                     context.SaveChanges();

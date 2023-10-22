@@ -3,15 +3,45 @@ version: '3.4'
 services:
 
   blazor:
-    build: EM.UI.Blazor
+    build:
+      dockerfile: Dockerfile.UI.Blazor
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/ui.blazor:0.0.1
     ports:
-      - "7250:443"
+      - "443:443"
+      - "80:80"
       
   webapi:
-    build: EM.WebApi.Core
+    build: 
+      dockerfile: Dockerfile.WebApi.Core
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/webapi.core:0.0.1
+    restart: always
+    depends_on:
+      - elasticsearch
+    environment:
+      ElasticsearchOptions__Uri : "http://elasticsearch:9200"
+      IS4__Uri : "https://is4:10001"
+      IS4__Audience : "weatherapi"
     ports:
       - "7890:7890"
 
+  elasticsearch:
+    image: elasticsearch:7.16.3
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - elastic_volume:/usr/share/elasticsearch/data
+
+  is4:
+    build: EM.IdentityServer4
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/is4:0.0.1
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "10001:10001"
+    environment:
+      ConnectionStrings__PostgresConnection: "Server=postgres;Port=5432;Database=is4;Username=user;Password=password"
+      
   postgres:
     image: postgres:14-alpine
     environment:
@@ -21,16 +51,29 @@ services:
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
       - postgres-volume:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
-  is4:
-    build: EM.IdentityServer4
+
+  rabbitmq:
+    image: rabbitmq:3-management
     ports:
-      - "10001:10001"
+      # AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672' 
     environment:
-      ConnectionStrings__PostgresConnection: "Server=localhost;Port=5432;Database=is4;Username=user;Password=password"
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
       
+  EM-Redis:
+    image: "redis:latest"
+    container_name: 'EM-Redis'
+    restart: always
+    ports:
+      - "6379:6379"
+
+  
 volumes:
   postgres-volume:
+    external: false
+  elastic_volume:
     external: false
