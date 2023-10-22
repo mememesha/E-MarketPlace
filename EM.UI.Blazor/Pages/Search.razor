@@ -2,9 +2,11 @@
 
 @using System.Web
 @using EM.UI.Blazor.Services
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 @inject SearchService _searchService
 @inject HttpClient _client
+
 @implements IDisposable
 
 @attribute [AllowAnonymous]
@@ -21,33 +23,41 @@
 
     protected override void OnInitialized()
     {
-        _searchService.OnSearch += SearchServiceOnOnSearch;
+        _searchService.OnSearch += SearchServiceOnSearch;
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
         if(firstRender)
-            SearchServiceOnOnSearch();
+            SearchServiceOnSearch();
     }
 
     public void Dispose()
     {
-        _searchService.OnSearch -= SearchServiceOnOnSearch;
+        _searchService.OnSearch -= SearchServiceOnSearch;
     }
 
-    private async void SearchServiceOnOnSearch()
+    private async void SearchServiceOnSearch()
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["query"] = _searchService.Query;
         if(!string.IsNullOrEmpty(_searchService.Filter))
             query["filter"] = _searchService.Filter;
 
-        var response = await _client.GetAsync(_searchService.SearchPath! + query);
+        try
+        {
+            var response = await _client.GetAsync(_searchService.SearchPath! + query);
+
+            if (!response.IsSuccessStatusCode)
+                return;
+
+            _response = await response.Content.ReadAsStringAsync();
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
         
-        if (!response.IsSuccessStatusCode) 
-            return;
-        
-        _response = await response.Content.ReadAsStringAsync();
         StateHasChanged();
     }
 }
