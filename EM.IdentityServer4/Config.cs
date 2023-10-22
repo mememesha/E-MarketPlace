@@ -43,9 +43,9 @@ namespace EM.IdentityServer4
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
 
-                    AllowedCorsOrigins = {"https://localhost"},
-                    RedirectUris = {"https://localhost/authentication/login-callback"},
-                    PostLogoutRedirectUris = {"https://localhost/authentication/logout-callback"},
+                    AllowedCorsOrigins = {"https://localhost:7250"},
+                    RedirectUris = {"https://localhost:7250/authentication/login-callback"},
+                    PostLogoutRedirectUris = {"https://localhost:7250/authentication/logout-callback"},
 
                     AllowedScopes = {"openid", "profile", "webapi.write"},
                 }

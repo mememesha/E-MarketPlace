@@ -1,0 +1,100 @@
+﻿@page "/"
+
+@using EM.UI.Blazor.Settings
+@using Microsoft.Extensions.Options
+@using EM.Dto
+@using EM.UI.Blazor.Shared
+
+@inject IOptions<WebApiOptions> _options
+
+@attribute [AllowAnonymous]
+
+<PageTitle>Главная</PageTitle>
+
+<section class="new_items">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="text-center">Новые предложения поставщиков</h5>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-md-center justify-content-lg-start">
+                    @if (_offers == null)
+                    {
+                        <div class="col-lg-6 col-md-12 mb-3 ml-5" style="min-width: 200px; max-width: 300px">
+                            <CardWithPlaceholder />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card border border-primary shadow-0 ">
+                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                                <img src="https://mdbootstrap.com/img/new/standard/nature/111.webp" class="img-fluid" />
+                                <a href="#!">
+                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                                </a>
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">
+                                    Some quick example text to build on the card title and make up the bulk of the
+                                    card's content.
+                                </p>
+
+                                <button type="button" class="btn btn-primary">Button</button>
+                            </div>
+                        </div>
+
+                        <label>@_offers!.Count</label>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="text-center">Новые предложения покупателей</h5>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-md-center justify-content-lg-start">
+                    @if (_offers == null)
+                    {
+                        <div class="col-lg-6 col-md-12 mb-3 ml-5" style="min-width: 200px; max-width: 300px">
+                            <CardWithPlaceholder />
+                        </div>
+                    }
+                    else
+                    {
+                        <label>@_offers!.Count</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private List<OfferDto>? _offers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        #if DEBUG
+        // Delay в секунду для старта прокси-дебагера в браузере
+        // https://docs.microsoft.com/en-us/aspnet/core/blazor/debug?view=aspnetcore-6.0&tabs=visual-studio#troubleshoot=
+        await Task.Delay(1000);
+        #endif
+
+        var client = new HttpClient();
+
+        var response = await client.GetAsync(_options.Value.Ip + _options.Value.NewOffers!);
+        if (!response.IsSuccessStatusCode)
+            return;
+        _offers = await response.Content.ReadFromJsonAsync<List<OfferDto>>();
+
+
+    }
+}

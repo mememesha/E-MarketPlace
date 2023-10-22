@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace EM.UI.Blazor;
+namespace EM.UI.Blazor.Handlers;
 
 public class CustomAuthorizationMessageHandler : AuthorizationMessageHandler
 {
@@ -11,6 +11,6 @@ public class CustomAuthorizationMessageHandler : AuthorizationMessageHandler
     {
         ConfigureHandler(
             authorizedUrls: new[] {"https://localhost:7890"},
-            scopes: new[] {"weather.write"});
+            scopes: new[] {"webapi.write"});
     }
 }

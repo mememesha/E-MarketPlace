@@ -1,17 +1,12 @@
 @page "/search"
 
-@using System.Web
 @using EM.UI.Blazor.Services
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 @inject SearchService _searchService
-@inject HttpClient _client
 
 @implements IDisposable
 
 @attribute [AllowAnonymous]
-
-<p>Filter: <input type="text" @bind="@_searchService.Filter"/></p>
 
 <p>Query: @_searchService.Query</p>
 
@@ -21,43 +16,21 @@
 @code {
     private string? _response = "Loading...";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        _searchService.OnSearch += SearchServiceOnSearch;
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if(firstRender)
-            SearchServiceOnSearch();
+        _searchService.OnSearch += OnSearchExecute;
+        _response = await _searchService.GetSearchAsync();
     }
 
     public void Dispose()
     {
-        _searchService.OnSearch -= SearchServiceOnSearch;
+        _searchService.OnSearch -= OnSearchExecute;
     }
 
-    private async void SearchServiceOnSearch()
+    private async void OnSearchExecute()
     {
-        var query = HttpUtility.ParseQueryString(string.Empty);
-        query["query"] = _searchService.Query;
-        if(!string.IsNullOrEmpty(_searchService.Filter))
-            query["filter"] = _searchService.Filter;
-
-        try
-        {
-            var response = await _client.GetAsync(_searchService.SearchPath! + query);
-
-            if (!response.IsSuccessStatusCode)
-                return;
-
-            _response = await response.Content.ReadAsStringAsync();
-        }
-        catch (AccessTokenNotAvailableException exception)
-        {
-            exception.Redirect();
-        }
-        
+        _response = await _searchService.GetSearchAsync();
         StateHasChanged();
     }
+
 }

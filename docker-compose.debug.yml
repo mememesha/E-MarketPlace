@@ -21,6 +21,18 @@ services:
       - discovery.type=single-node
     volumes:
       - elastic_volume:/usr/share/elasticsearch/data
+
+  rabbitmq:
+    container_name: "rabbitmq"
+    image: rabbitmq:3-management
+    ports:
+      # AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672' 
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
         
 volumes:
   postrges_volume:

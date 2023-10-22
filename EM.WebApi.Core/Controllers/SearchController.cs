@@ -31,7 +31,8 @@ namespace EM.WebApi.Core.Controllers
         /// <param name="location">Локация в которой ищем. По дефолту во всех локациях. Но как идея, дефолтное значение из ip из httpcontext</param>
         /// <param name="category">Список категорий в которых ищем, например кантакты, организация, продажи, покупки. По дефолту во всех категориях</param>
         /// <returns></returns>
-        [HttpGet, Authorize("write-access")]
+        // [HttpGet, Authorize("write-access")]
+        [HttpGet, AllowAnonymous]
         public async Task<IEnumerable<SearchDocument>> GetSearchResult(
             [FromQuery(Name = "query")] string query,
             [FromQuery(Name = "location")] string? location,
@@ -95,7 +96,7 @@ namespace EM.WebApi.Core.Controllers
         /// <param name="category"></param>
         /// <param name="location"></param>
         /// <returns></returns>
-        [HttpGet("Add"), AllowAnonymous]
+        [HttpGet("Add")]
         public async Task<string> AddSearchDocument(
             [FromQuery(Name = "title")] string title,
             [FromQuery(Name = "url")] string url,
