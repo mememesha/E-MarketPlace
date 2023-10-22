@@ -10,46 +10,7 @@
     <projectFile profileName="EM.MicroService.Location">EM.MicroService.Location/EM.MicroService.Location.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d676f5c0-3287-4989-a5f3-feb67be752a8" name="Changes" comment="Add WebApiOptions.cs to UI.Blazor and implement it">
-      <change afterPath="$PROJECT_DIR$/EM.WebApi.Core/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Diagrams/EMC_schema_v2.drawio" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.Dto/OfferDto.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.IdentityServer4/Config.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EM.IdentityServer4/Config.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.IdentityServer4/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/EM.IdentityServer4/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.IdentityServer4/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EM.IdentityServer4/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.IdentityServer4/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/EM.IdentityServer4/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Dockerfile.bak" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/EM.UI.Blazor.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/EM.UI.Blazor.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Handlers/CustomAuthorizationMessageHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Pages/Index.razor" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/Pages/Index.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Pages/Search.razor" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/Pages/Search.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Services/LocationService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Services/SearchService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/Services/SearchService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Settings/WebApiOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/Settings/WebApiOptions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Shared/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/Shared/MainLayout.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/Shared/SearchField.razor" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/Shared/SearchField.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/nginx.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/wwwroot/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/EM.UI.Blazor/wwwroot/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.UI.Blazor/wwwroot/js/bootstrap.bundle.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/.dockerignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Controllers/LocationController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Controllers/OffersController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Controllers/SearchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EM.WebApi.Core/Controllers/SearchController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/EM.WebApi.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/EM.WebApi.Core/EM.WebApi.Core.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Extensions/SessionCookieExtentions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Middleware/SessionCookieMiddleware.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Options/ElasticsearchOptions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Options/IS4Options.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/EM.WebApi.Core/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EM.WebApi.Core/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.WebApi.Core/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/EM.WebApi.Core/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.sln" beforeDir="false" afterPath="$PROJECT_DIR$/EM.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.debug.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.debug.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-    </list>
+    <list default="true" id="d676f5c0-3287-4989-a5f3-feb67be752a8" name="Changes" comment="dd Elastic to docker compose files" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -370,7 +331,42 @@
       <option name="project" value="LOCAL" />
       <updated>1697992801088</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Add EM.Dto to UI.Blazor">
+      <created>1697992923768</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1697992923768</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Add CORS and https in WebApi.Core">
+      <created>1697993011187</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1697993011187</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Add ElasticsearchOptions.cs and implement it in SearchController.cs">
+      <created>1697993092441</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1697993092441</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Add Dockerfile to WebApi.Core">
+      <created>1697993143805</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1697993143805</updated>
+    </task>
+    <task id="LOCAL-00027" summary="dd Elastic to docker compose files">
+      <created>1697993198564</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1697993198564</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -390,8 +386,6 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add Blazor WebAssembly project" />
-    <MESSAGE value="Add IdentityServer 4 project" />
     <MESSAGE value="Add IdentityServer4.EntityFramework and IdentityServer4.EntityFramework.Storage libraries, to store IdentityServer settings in EF Core" />
     <MESSAGE value="&#10;Add server connections setup to use EF Core in Startup.cs" />
     <MESSAGE value="Add Microsoft.EntityFrameworkCore.Design library for migrations" />
@@ -412,6 +406,11 @@
     <MESSAGE value="&#10;Add docker-compose.yml file with postgres db" />
     <MESSAGE value="Use build-in HttpClient" />
     <MESSAGE value="Add WebApiOptions.cs to UI.Blazor and implement it" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add WebApiOptions.cs to UI.Blazor and implement it" />
+    <MESSAGE value="Add EM.Dto to UI.Blazor" />
+    <MESSAGE value="Add CORS and https in WebApi.Core" />
+    <MESSAGE value="Add ElasticsearchOptions.cs and implement it in SearchController.cs" />
+    <MESSAGE value="Add Dockerfile to WebApi.Core" />
+    <MESSAGE value="dd Elastic to docker compose files" />
+    <option name="LAST_COMMIT_MESSAGE" value="dd Elastic to docker compose files" />
   </component>
 </project>
