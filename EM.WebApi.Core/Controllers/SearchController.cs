@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 using EM.WebApi.Core.Models;
+using EM.WebApi.Core.Options;
 using EM.WebApi.Core.Settings.Search;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Nest;
 
 namespace EM.WebApi.Core.Controllers
@@ -14,6 +16,13 @@ namespace EM.WebApi.Core.Controllers
     [Route("api/v1/[controller]")]
     public class SearchController
     {
+        private readonly IOptions<ElasticsearchOptions> _options;
+
+        public SearchController(IOptions<ElasticsearchOptions> options)
+        {
+            _options = options;
+        }
+
         /// <summary>
         /// Метод апи поиска
         /// </summary>
@@ -29,7 +38,7 @@ namespace EM.WebApi.Core.Controllers
         {
             var searchResult = new List<SearchDocument>();
 
-            var pool = new SingleNodeConnectionPool(new Uri("http://localhost:9200"));
+            var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
 
             var settings = new ConnectionSettings(pool)
                 .DefaultMappingFor<SearchDocument>(
@@ -104,7 +113,7 @@ namespace EM.WebApi.Core.Controllers
                 DocumentId = Guid.NewGuid()
             };
 
-            var pool = new SingleNodeConnectionPool(new Uri("http://localhost:9200"));
+            var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
 
             var settings = new ConnectionSettings(pool)
                 .DefaultMappingFor<SearchDocument>(
