@@ -10,7 +10,10 @@
     <projectFile profileName="EM.MicroService.Location">EM.MicroService.Location/EM.MicroService.Location.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d676f5c0-3287-4989-a5f3-feb67be752a8" name="Changes" comment="dd Elastic to docker compose files" />
+    <list default="true" id="d676f5c0-3287-4989-a5f3-feb67be752a8" name="Changes" comment="fix after review">
+      <change beforePath="$PROJECT_DIR$/Dockerfile.UI.Blazor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile.WebApi.Core" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,15 +29,12 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.IdentityServer4/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.UI.Blazor/Pages/Search.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EM.WebApi.Core/Controllers/SearchController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EM.WebApi.Core/Models/SearchDocument.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
@@ -366,7 +366,14 @@
       <option name="project" value="LOCAL" />
       <updated>1697993198564</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="fix after review">
+      <created>1697993317261</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1697993317261</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -386,7 +393,6 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add IdentityServer4.EntityFramework and IdentityServer4.EntityFramework.Storage libraries, to store IdentityServer settings in EF Core" />
     <MESSAGE value="&#10;Add server connections setup to use EF Core in Startup.cs" />
     <MESSAGE value="Add Microsoft.EntityFrameworkCore.Design library for migrations" />
     <MESSAGE value="Add migrations for server settings in EF Core base" />
@@ -411,6 +417,7 @@
     <MESSAGE value="Add ElasticsearchOptions.cs and implement it in SearchController.cs" />
     <MESSAGE value="Add Dockerfile to WebApi.Core" />
     <MESSAGE value="dd Elastic to docker compose files" />
-    <option name="LAST_COMMIT_MESSAGE" value="dd Elastic to docker compose files" />
+    <MESSAGE value="fix after review" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix after review" />
   </component>
 </project>
