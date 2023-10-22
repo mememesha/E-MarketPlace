@@ -9,6 +9,7 @@ using EM.WebApi.Core.Settings.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+
 using Nest;
 
 namespace EM.WebApi.Core.Controllers
@@ -17,6 +18,7 @@ namespace EM.WebApi.Core.Controllers
     [Route("api/v1/[controller]")]
     public class SearchController
     {
+
         private readonly IOptions<ElasticsearchOptions> _options;
 
         public SearchController(IOptions<ElasticsearchOptions> options)
@@ -24,6 +26,7 @@ namespace EM.WebApi.Core.Controllers
             _options = options;
         }
         
+
         /// <summary>
         /// Метод апи поиска
         /// </summary>
@@ -39,7 +42,6 @@ namespace EM.WebApi.Core.Controllers
             [FromQuery(Name = "category")] string[]? categories)
         {
             var searchResult = new List<SearchDocument>();
-
             var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
 
             var settings = new ConnectionSettings(pool)
