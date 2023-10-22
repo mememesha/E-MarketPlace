@@ -7,6 +7,7 @@
     <projectFile profileName="EM.IdentityServer4">EM.IdentityServer4/EM.IdentityServer4.csproj</projectFile>
     <projectFile profileName="SelfHost">EM.IdentityServer4/EM.IdentityServer4.csproj</projectFile>
     <projectFile profileName="EM.WebApi.Core">EM.WebApi.Core/EM.WebApi.Core.csproj</projectFile>
+    <projectFile profileName="EM.MicroService.Location">EM.MicroService.Location/EM.MicroService.Location.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d676f5c0-3287-4989-a5f3-feb67be752a8" name="Changes" comment="" />
@@ -24,6 +25,18 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.IdentityServer4/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EM.WebApi.Core/Controllers/SearchController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EM.WebApi.Core/Models/SearchDocument.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="2Wtm3yyMBmAbEHldPHbtiGXQvN3" />
   <component name="ProjectLevelVcsManager">

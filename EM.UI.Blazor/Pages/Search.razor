@@ -1,12 +1,15 @@
 @page "/search"
 
+@using System.Web
 @using EM.UI.Blazor.Services
 
 @inject SearchService _searchService
-
+@inject HttpClient _client
 @implements IDisposable
 
 @attribute [AllowAnonymous]
+
+<p>Filter: <input type="text" @bind="@_searchService.Filter"/></p>
 
 <p>Query: @_searchService.Query</p>
 
@@ -16,21 +19,35 @@
 @code {
     private string? _response = "Loading...";
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        _searchService.OnSearch += OnSearchExecute;
-        _response = await _searchService.GetSearchAsync();
+        _searchService.OnSearch += SearchServiceOnOnSearch;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+            SearchServiceOnOnSearch();
     }
 
     public void Dispose()
     {
-        _searchService.OnSearch -= OnSearchExecute;
+        _searchService.OnSearch -= SearchServiceOnOnSearch;
     }
 
-    private async void OnSearchExecute()
+    private async void SearchServiceOnOnSearch()
     {
-        _response = await _searchService.GetSearchAsync();
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["query"] = _searchService.Query;
+        if(!string.IsNullOrEmpty(_searchService.Filter))
+            query["filter"] = _searchService.Filter;
+
+        var response = await _client.GetAsync(_searchService.SearchPath! + query);
+        
+        if (!response.IsSuccessStatusCode) 
+            return;
+        
+        _response = await response.Content.ReadAsStringAsync();
         StateHasChanged();
     }
-
 }
