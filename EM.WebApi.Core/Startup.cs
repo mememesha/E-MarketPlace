@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EM.WebApi.Core.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,10 @@ namespace EM.WebApi.Core
                 options.Title = "EM API Doc";
                 options.Version = "1.0";
             });
+
+            services.AddCors();
+
+            services.Configure<ElasticsearchOptions>(Configuration.GetSection("ElasticsearchOptions"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,9 +51,14 @@ namespace EM.WebApi.Core
                 x.DocExpansion = "list";
             });
             
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(s => true));
 
             app.UseEndpoints(endpoints =>
             {
