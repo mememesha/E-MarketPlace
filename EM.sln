@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 
+#
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EM.UI.Blazor", "EM.UI.Blazor\EM.UI.Blazor.csproj", "{1AC5F2B3-10BE-4B68-8016-1A76DA9E6D6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EM.IdentityServer4", "EM.IdentityServer4\EM.IdentityServer4.csproj", "{78934E83-9DC6-4D98-910A-AFC81CF2FFF6}"
@@ -14,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EM.Shared", "EM.Shared\EM.Shared.csproj", "{D9E57649-706A-4FB8-A1E6-3308EF7B15E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EM.MicroService.Location", "EM.MicroService.Location\EM.MicroService.Location.csproj", "{304D3F4A-04BD-4E69-9E26-4B5B83CCBCCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EM.MicroService.SearchApi", "EM.MicroService.SearchApi\EM.MicroService.SearchApi.csproj", "{F5E2919D-8B5D-449A-B07F-2C80610D853C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EM.Redis", "EM.Redis\EM.Redis.csproj", "{1266CD92-2FAA-48D8-87D3-2D84999D0D07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,5 +53,13 @@ Global
 		{304D3F4A-04BD-4E69-9E26-4B5B83CCBCCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{304D3F4A-04BD-4E69-9E26-4B5B83CCBCCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{304D3F4A-04BD-4E69-9E26-4B5B83CCBCCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5E2919D-8B5D-449A-B07F-2C80610D853C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5E2919D-8B5D-449A-B07F-2C80610D853C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5E2919D-8B5D-449A-B07F-2C80610D853C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5E2919D-8B5D-449A-B07F-2C80610D853C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1266CD92-2FAA-48D8-87D3-2D84999D0D07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1266CD92-2FAA-48D8-87D3-2D84999D0D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1266CD92-2FAA-48D8-87D3-2D84999D0D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1266CD92-2FAA-48D8-87D3-2D84999D0D07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
