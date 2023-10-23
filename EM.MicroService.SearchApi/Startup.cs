@@ -1,7 +1,6 @@
-﻿using EM.MicroService.SearchApi.Abstractions;
-using EM.MicroService.SearchApi.Extensions;
+﻿using EM.MicroService.SearchApi.Extensions;
 using EM.MicroService.SearchApi.Options;
-using Microsoft.Extensions.Caching.Distributed;
+using EM.MicroService.SearchApi.Repository;
 
 namespace EM.MicroService.SearchApi
 {
@@ -22,20 +21,6 @@ namespace EM.MicroService.SearchApi
                 options.Configuration = Configuration.GetSection("RedisSettings")["RedisApiUrl"];
                 options.InstanceName = "SampleInstance";
             });
-
-            // services.AddControllers().AddMvcOptions(x =>
-            //     x.SuppressAsyncSuffixInActionNames = false);
-
-            // services.AddHttpClient<IDistributedCache, DistributedCache>(client =>
-            // {
-            //     client.BaseAddress = new Uri(Configuration["RedisSettings:RedisApiUrl"]);
-            //     client.Timeout = TimeSpan.FromMinutes(3);
-            // }).ConfigurePrimaryHttpMessageHandler(() =>
-            // {
-            //     var clientHandler = new HttpClientHandler();
-            //     clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
-            //     return clientHandler;
-            // });
 
             services.AddControllers().AddNewtonsoftJson();
             services.AddOpenApiDocument(options =>
@@ -73,6 +58,7 @@ namespace EM.MicroService.SearchApi
                     policy.RequireClaim("scope", "webapi.write");
                 });
             });*/
+            services.AddSingleton<IElasticRepository, ElasticRepository>();
 
             services.AddCors(
                 options => options.AddPolicy("AllowAll",

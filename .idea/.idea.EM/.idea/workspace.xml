@@ -8,26 +8,23 @@
     <projectFile profileName="SelfHost">EM.IdentityServer4/EM.IdentityServer4.csproj</projectFile>
     <projectFile profileName="EM.WebApi.Core">EM.WebApi.Core/EM.WebApi.Core.csproj</projectFile>
     <projectFile profileName="EM.MicroService.Location">EM.MicroService.Location/EM.MicroService.Location.csproj</projectFile>
+    <projectFile profileName="EM.MicroService.SearchApi">EM.MicroService.SearchApi/EM.MicroService.SearchApi.csproj</projectFile>
+    <projectFile profileName="EM.Redis">EM.Redis/EM.Redis.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d676f5c0-3287-4989-a5f3-feb67be752a8" name="Changes" comment="fix after review">
-      <change beforePath="$PROJECT_DIR$/Dockerfile.UI.Blazor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile.WebApi.Core" beforeDir="false" />
+    <list default="true" id="f05b253a-bc64-4dde-a631-c890f32c083f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.EM/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EM.MicroService.SearchApi/Middleware/CacheMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EM.MicroService.SearchApi/Middleware/CacheMiddleware.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="UI" />
-      </map>
-    </option>
-  </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.IdentityServer4/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.MicroService.SearchApi/Startup.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.UI.Blazor/Pages/Search.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
@@ -39,345 +36,16 @@
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
-  <component name="ProjectId" id="2Wtm3yyMBmAbEHldPHbtiGXQvN3" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.EM.UI.Blazor">
-    <configuration name="EM.IdentityServer4" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/EM.IdentityServer4/EM.IdentityServer4.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value=".NETCoreApp,Version=v3.1" />
-      <option name="LAUNCH_PROFILE_NAME" value="EM.IdentityServer4" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="EM.IdentityServer4: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/EM.IdentityServer4/EM.IdentityServer4.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value=".NETCoreApp,Version=v3.1" />
-      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="EM.IdentityServer4: SelfHost" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/EM.IdentityServer4/EM.IdentityServer4.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value=".NETCoreApp,Version=v3.1" />
-      <option name="LAUNCH_PROFILE_NAME" value="SelfHost" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="EM.MicroService.Location" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/EM.MicroService.Location/EM.MicroService.Location.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net6.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="EM.MicroService.Location" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="EM.UI.Blazor" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/EM.UI.Blazor/EM.UI.Blazor.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net6.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="EM.UI.Blazor" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="EM.UI.Blazor: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/EM.UI.Blazor/EM.UI.Blazor.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net6.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="EM.WebApi.Core" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/EM.WebApi.Core/EM.WebApi.Core.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net6.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="EM.WebApi.Core" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+}]]></component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="d676f5c0-3287-4989-a5f3-feb67be752a8" name="Changes" comment="" />
-      <created>1697560056206</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1697560056206</updated>
-      <workItem from="1697560060458" duration="5991000" />
-      <workItem from="1697573757339" duration="430000" />
-    </task>
-    <task id="LOCAL-00001" summary="Add Blazor WebAssembly project">
-      <created>1697560203742</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1697560203742</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Add IdentityServer 4 project">
-      <created>1697561765404</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1697561765404</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Add IdentityServer4.EntityFramework and IdentityServer4.EntityFramework.Storage libraries, to store IdentityServer settings in EF Core">
-      <created>1697561977802</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1697561977802</updated>
-    </task>
-    <task id="LOCAL-00004" summary="&#10;Add server connections setup to use EF Core in Startup.cs">
-      <created>1697562118920</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1697562118920</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Add Microsoft.EntityFrameworkCore.Design library for migrations">
-      <created>1697562257572</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1697562257572</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Add migrations for server settings in EF Core base">
-      <created>1697562419232</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1697562419232</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Add setup server settings only for Debug">
-      <created>1697562551938</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1697562551938</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Add EM.Blazor client settings for IdentityServer">
-      <created>1697562722665</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1697562722665</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Change IS4 port to 10001">
-      <created>1697562822816</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1697562822816</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Change Blazor project clientId for IS4 to &quot;em.ui.blazor&quot;">
-      <created>1697562917166</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1697562917166</updated>
-    </task>
-    <task id="LOCAL-00011" summary="&#10;Add Cors in IS4 project from IS4 to Blazor">
-      <created>1697563068768</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1697563068768</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Add Registry model and view">
-      <created>1697563207036</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1697563207036</updated>
-    </task>
-    <task id="LOCAL-00013" summary="&#10;Edit Dockerfile to publish app using nginx">
-      <created>1697563367695</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1697563367695</updated>
-    </task>
-    <task id="LOCAL-00014" summary="&#10;Add Dockerfile to IS4 project">
-      <created>1697565843538</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1697565843538</updated>
-    </task>
-    <task id="LOCAL-00015" summary="&#10;Add initiation of sqlite bases in IS4 project. Only for tests">
-      <created>1697569376707</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1697569376707</updated>
-    </task>
-    <task id="LOCAL-00016" summary="&#10;Change ports of projects from https to http. Only for tests">
-      <created>1697569614446</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1697569614446</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Add docker-compose.yml file">
-      <created>1697569728836</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1697569728836</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Update Migrations for postgres">
-      <created>1697569851854</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1697569851854</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Use postgres instead of sqlite">
-      <created>1697570003964</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1697570003964</updated>
-    </task>
-    <task id="LOCAL-00020" summary="&#10;Add docker-compose.yml file with postgres db">
-      <created>1697570094276</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1697570094276</updated>
-    </task>
-    <task id="LOCAL-00021" summary="Use build-in HttpClient">
-      <created>1697992695431</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1697992695431</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Add WebApiOptions.cs to UI.Blazor and implement it">
-      <created>1697992801088</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1697992801088</updated>
-    </task>
-    <task id="LOCAL-00023" summary="Add EM.Dto to UI.Blazor">
-      <created>1697992923768</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1697992923768</updated>
-    </task>
-    <task id="LOCAL-00024" summary="Add CORS and https in WebApi.Core">
-      <created>1697993011187</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1697993011187</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Add ElasticsearchOptions.cs and implement it in SearchController.cs">
-      <created>1697993092441</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1697993092441</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Add Dockerfile to WebApi.Core">
-      <created>1697993143805</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1697993143805</updated>
-    </task>
-    <task id="LOCAL-00027" summary="dd Elastic to docker compose files">
-      <created>1697993198564</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1697993198564</updated>
-    </task>
-    <task id="LOCAL-00028" summary="fix after review">
-      <created>1697993317261</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1697993317261</updated>
-    </task>
-    <option name="localTasksCounter" value="29" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -389,35 +57,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="&#10;Add server connections setup to use EF Core in Startup.cs" />
-    <MESSAGE value="Add Microsoft.EntityFrameworkCore.Design library for migrations" />
-    <MESSAGE value="Add migrations for server settings in EF Core base" />
-    <MESSAGE value="Add setup server settings only for Debug" />
-    <MESSAGE value="Add EM.Blazor client settings for IdentityServer" />
-    <MESSAGE value="Change IS4 port to 10001" />
-    <MESSAGE value="Change Blazor project clientId for IS4 to &quot;em.ui.blazor&quot;" />
-    <MESSAGE value="&#10;Add Cors in IS4 project from IS4 to Blazor" />
-    <MESSAGE value="Add Registry model and view" />
-    <MESSAGE value="&#10;Edit Dockerfile to publish app using nginx" />
-    <MESSAGE value="&#10;Add Dockerfile to IS4 project" />
-    <MESSAGE value="&#10;Add initiation of sqlite bases in IS4 project. Only for tests" />
-    <MESSAGE value="&#10;Change ports of projects from https to http. Only for tests" />
-    <MESSAGE value="Add docker-compose.yml file" />
-    <MESSAGE value="Update Migrations for postgres" />
-    <MESSAGE value="Use postgres instead of sqlite" />
-    <MESSAGE value="&#10;Add docker-compose.yml file with postgres db" />
-    <MESSAGE value="Use build-in HttpClient" />
-    <MESSAGE value="Add WebApiOptions.cs to UI.Blazor and implement it" />
-    <MESSAGE value="Add EM.Dto to UI.Blazor" />
-    <MESSAGE value="Add CORS and https in WebApi.Core" />
-    <MESSAGE value="Add ElasticsearchOptions.cs and implement it in SearchController.cs" />
-    <MESSAGE value="Add Dockerfile to WebApi.Core" />
-    <MESSAGE value="dd Elastic to docker compose files" />
-    <MESSAGE value="fix after review" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix after review" />
   </component>
 </project>

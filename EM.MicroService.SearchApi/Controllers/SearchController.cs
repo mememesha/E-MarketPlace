@@ -1,13 +1,7 @@
-﻿using Elasticsearch.Net;
-using EM.MicroService.SearchApi.Abstractions;
-using EM.MicroService.SearchApi.Helpers;
-using EM.MicroService.SearchApi.Models;
-using EM.MicroService.SearchApi.Options;
+﻿using EM.MicroService.SearchApi.Models;
+using EM.MicroService.SearchApi.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Nest;
-using Newtonsoft.Json;
 
 namespace EM.MicroService.SearchApi.Controllers
 {
@@ -15,14 +9,11 @@ namespace EM.MicroService.SearchApi.Controllers
     [Route("api/v1/[controller]")]
     public class SearchController : Controller
     {
-        private readonly IOptions<ElasticSearchOptions> _options;
-        // private readonly IDistributedCache _distributedCache;
+        private readonly IElasticRepository _elasticRepository;
 
-        public SearchController(IOptions<ElasticSearchOptions> options)
-        // IDistributedCache distributedCache)
+        public SearchController(IElasticRepository elasticRepository)
         {
-            _options = options;
-            // _distributedCache = distributedCache;
+            _elasticRepository = elasticRepository;
         }
 
         /// <summary>
@@ -39,52 +30,7 @@ namespace EM.MicroService.SearchApi.Controllers
             [FromQuery(Name = "location")] string? location,
             [FromQuery(Name = "category")] string[]? categories)
         {
-            var redisKey = RedisKeyHelper.GetRedisKey(JsonConvert.SerializeObject(HttpContext.Request.Query));
-
-            var searchResult = new List<SearchDocument>();
-
-            var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
-
-            var settings = new ConnectionSettings(pool)
-                .DefaultMappingFor<SearchDocument>(
-                    m =>
-                        m.IndexName(GetElasticIndexName()));
-
-            var client = new ElasticClient(settings);
-
-            var elasticQuery = new MatchQuery { Field = "isDeleted", Query = "false" }
-                               && (new MatchQuery { Field = "document", Query = query });
-            if (location != null)
-            {
-                elasticQuery = elasticQuery && new MatchQuery { Field = "location", Query = location };
-            }
-
-            if (categories.Any())
-            {
-                var catQueries = categories
-                    .Select(category => new MatchQuery { Field = "category", Query = category });
-                QueryBase catElasticQuery = null;
-                catElasticQuery = catQueries.Aggregate(catElasticQuery, (current, catQuery) => current || catQuery);
-                elasticQuery = elasticQuery && catElasticQuery;
-            }
-
-            var request = new SearchRequest
-            {
-                From = 0,
-                Size = 10,
-                Query = elasticQuery
-            };
-
-            var responseSearch = client.Search<SearchDocument>(request);
-
-            if (!responseSearch.IsValid)
-            {
-                throw responseSearch.OriginalException;
-            }
-
-            searchResult.AddRange(responseSearch.Documents);
-
-            return searchResult;
+            return await _elasticRepository.SearchDocuments(query, location, categories);
         }
 
         /// <summary>
@@ -105,33 +51,31 @@ namespace EM.MicroService.SearchApi.Controllers
                 Document = document,
                 Category = category,
                 Location = location,
-                IsDeleted = false,
-                DocumentId = Guid.NewGuid()
             };
 
-            var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
-
-            var settings = new ConnectionSettings(pool)
-                .DefaultMappingFor<SearchDocument>(
-                m =>
-                    m.IndexName(GetElasticIndexName()));
-
-            var client = new ElasticClient(settings);
-
-            var response = await client.IndexAsync(SearchDocument,
-                idx => idx.Index(GetElasticIndexName()));
-
-            if (!response.IsValid)
-            {
-                throw response.OriginalException;
-            }
-
-            return SearchDocument.DocumentId.ToString();
+            return await _elasticRepository.AddDocument(SearchDocument);
         }
 
-        private string GetElasticIndexName()
+        // delete document
+        /// <summary>
+        /// Удаление документа по _id из эластика
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <returns></returns>
+        /// <exception cref="HttpRequestException"></exception>
+        [HttpDelete("Delete")]
+        public async Task<string> DeleteSearchDocument(
+            [FromQuery(Name = "documentId")] string documentId)
         {
-            return string.Format(_options.Value.SearchIndexPattern, DateTime.Now.ToString("yyyy-M"));
+            try
+            {
+                await _elasticRepository.DeleteDocuments(documentId);
+                return $"[{documentId}] has been deleted";
+            }
+            catch (Exception e)
+            {
+                throw new HttpRequestException($"Can not delete [{documentId}] document", e);
+            }
         }
     }
 }
