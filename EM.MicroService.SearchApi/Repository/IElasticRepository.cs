@@ -9,7 +9,9 @@ public interface IElasticRepository
     Task<IEnumerable<SearchDocument>> SearchDocuments(
         string query,
         string? location,
-        string[]? categories);
+        string[]? categories,
+        int from = 0, 
+        int size = 10);
     
     Task DeleteDocuments(string documentId);
 }

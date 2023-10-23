@@ -12,11 +12,7 @@
     <projectFile profileName="EM.Redis">EM.Redis/EM.Redis.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f05b253a-bc64-4dde-a631-c890f32c083f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.EM/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EM.MicroService.SearchApi/Middleware/CacheMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EM.MicroService.SearchApi/Middleware/CacheMiddleware.cs" afterDir="false" />
-    </list>
+    <list default="true" id="f05b253a-bc64-4dde-a631-c890f32c083f" name="Changes" comment="Microservices searchapi and redis have been added" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,6 +20,11 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.IdentityServer4/Views/Shared/_Layout.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.MicroService.SearchApi/Controllers/SearchController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.MicroService.SearchApi/Controllers/SearchController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.MicroService.SearchApi/Middleware/CacheMiddleware.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.MicroService.SearchApi/Middleware/CacheMiddleware.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.MicroService.SearchApi/Middleware/CacheMiddleware.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.MicroService.SearchApi/Startup.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.UI.Blazor/Pages/Search.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Models/SearchDocument.cs" root0="SKIP_HIGHLIGHTING" />
@@ -36,14 +37,17 @@
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mememesha/Projects/E-MarketPlace/EM.WebApi.Core/Settings/Search/ElasticSearchSettings.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="Toolset" />
+  </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="TaskManager">
     <servers />
   </component>

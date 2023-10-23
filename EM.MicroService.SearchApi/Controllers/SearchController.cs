@@ -28,9 +28,16 @@ namespace EM.MicroService.SearchApi.Controllers
         public async Task<IEnumerable<SearchDocument>> GetSearchResult(
             [FromQuery(Name = "query")] string query,
             [FromQuery(Name = "location")] string? location,
-            [FromQuery(Name = "category")] string[]? categories)
+            [FromQuery(Name = "category")] string[]? categories,
+            [FromQuery(Name = "from")] int from = 0,
+            [FromQuery(Name = "size")] int size = 10)
         {
-            return await _elasticRepository.SearchDocuments(query, location, categories);
+            return await _elasticRepository.SearchDocuments(
+                query,
+                location,
+                categories,
+                from,
+                size);
         }
 
         /// <summary>

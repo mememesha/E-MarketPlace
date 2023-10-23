@@ -24,7 +24,7 @@ public class ElasticRepository : IElasticRepository
                 m =>
                     m.IndexName(GetElasticIndexName()));
 
-        var client = new ElasticClient(settings);
+        var client = new ElasticClient(settings); //TODO: Вынести клиента и замокать его в тестах?
 
         var response = await client.IndexAsync(document,
             idx => idx.Index(GetElasticIndexName()));
@@ -37,7 +37,12 @@ public class ElasticRepository : IElasticRepository
         return response.Id;
     }
 
-    public async Task<IEnumerable<SearchDocument>> SearchDocuments(string query, string? location, string[]? categories)
+    public async Task<IEnumerable<SearchDocument>> SearchDocuments(
+        string query,
+        string? location,
+        string[]? categories,
+        int from = 0,
+        int size = 10)
     {
         var searchResult = new List<SearchDocument>();
 
@@ -50,8 +55,7 @@ public class ElasticRepository : IElasticRepository
 
         var client = new ElasticClient(settings);
 
-        var elasticQuery = new MatchQuery { Field = "isDeleted", Query = "false" }
-                           && (new MatchQuery { Field = "document", Query = query });
+        QueryBase elasticQuery = new MatchQuery { Field = "document", Query = query };
         if (location != null)
         {
             elasticQuery = elasticQuery && new MatchQuery { Field = "location", Query = location };
@@ -68,9 +72,10 @@ public class ElasticRepository : IElasticRepository
 
         var request = new SearchRequest
         {
-            From = 0,
-            Size = 10,
-            Query = elasticQuery
+            From = from,
+            Size = size,
+            Query = elasticQuery,
+            RequestCache = false
         };
 
         var responseSearch = client.Search<SearchDocument>(request);
