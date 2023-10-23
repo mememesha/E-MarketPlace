@@ -1,7 +1,4 @@
-﻿using System.Text;
-// using EM.MicroService.SearchApi.Abstractions;
-using EM.MicroService.SearchApi.Helpers;
-using Microsoft.Extensions.Caching.Distributed;
+﻿using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
 namespace EM.MicroService.SearchApi.Middleware;
@@ -10,12 +7,11 @@ public class CacheMiddleware
 {
     private readonly IDistributedCache _distributedCache;
     private readonly RequestDelegate _next;
-    private readonly static DistributedCacheEntryOptions distributedCacheEntryOptions
-            = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(5));
+    private static readonly DistributedCacheEntryOptions distributedCacheEntryOptions
+            = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(2));
     public CacheMiddleware(RequestDelegate next, IDistributedCache distributedCache)
     {
         _next = next;
-        // _distributedCache = distributedCache;
         _distributedCache = distributedCache;
     }
 
@@ -23,9 +19,7 @@ public class CacheMiddleware
     {
         if (context.Request.Path.Equals("/api/v1/Search"))
         {
-            // var redisKey = RedisKeyHelper.GetRedisKey(JsonConvert.SerializeObject(context.Request.Query));
             var redisKey = JsonConvert.SerializeObject(context.Request.Query);
-            // var cache = await _distributedCache.GetPreferencesFromCache(redisKey);
             var cache = await _distributedCache.GetAsync(redisKey);
 
             if (cache != null)
@@ -42,7 +36,6 @@ public class CacheMiddleware
 
                 ms.Position = 0;
                 var searchResult = ms.ToArray();
-                // await _distributedCache.AddPreferencesToCache(redisKey, searchResult);
                 await _distributedCache.SetAsync(redisKey, searchResult, distributedCacheEntryOptions);
                 ms.Position = 0;
                 await ms.CopyToAsync(responseStream);
