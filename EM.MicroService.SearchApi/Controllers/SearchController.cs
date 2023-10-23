@@ -11,9 +11,14 @@ namespace EM.MicroService.SearchApi.Controllers
     {
         private readonly IElasticRepository _elasticRepository;
 
-        public SearchController(IElasticRepository elasticRepository)
+        private ILogger<SearchController> _logger;
+        
+        public SearchController(
+            IElasticRepository elasticRepository,
+            ILogger<SearchController> logger)
         {
             _elasticRepository = elasticRepository;
+            _logger = logger;
         }
 
         /// <summary>
@@ -60,7 +65,12 @@ namespace EM.MicroService.SearchApi.Controllers
                 Location = location,
             };
 
-            return await _elasticRepository.AddDocument(SearchDocument);
+            var documentId = await _elasticRepository.AddDocument(SearchDocument);
+            
+            _logger.LogInformation($"Document with [{documentId}] has been added");
+
+            return documentId;
+
         }
 
         // delete document
@@ -77,12 +87,17 @@ namespace EM.MicroService.SearchApi.Controllers
             try
             {
                 await _elasticRepository.DeleteDocuments(documentId);
+                _logger.LogInformation($"Document with [{documentId}] has been deleted");
+                
                 return $"[{documentId}] has been deleted";
             }
             catch (Exception e)
             {
+                _logger.LogError($"Document with [{documentId}] can not be deleted: {e}");
+                
                 throw new HttpRequestException($"Can not delete [{documentId}] document", e);
             }
+
         }
     }
 }
