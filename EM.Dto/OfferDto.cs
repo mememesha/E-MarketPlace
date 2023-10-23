@@ -2,14 +2,24 @@ using System;
 
 namespace EM.Dto
 {
-    public class OfferDto
+    public class OfferDto : ICloneable
     {
         public Guid Id { get; set; }
-        public string? Title { get; set; }
-        public string? Description { get; set; }
-        public List<string>? Tags { get; set; }
-        public bool IsSale { get; set; }
         public decimal CostOfUnit { get; set; }
-        public string? Image { get; set; }
+        public OfferDescriptionDto? OfferDescriptionDto { get; set; }
+        public PlaceDto? PlaceDto { get; set; }
+        public OrganizationShortDto? OrganizationShortDto { get; set; }
+
+        public object Clone()
+        {
+            return new OfferDto
+            {
+                Id = this.Id,
+                CostOfUnit = this.CostOfUnit,
+                OfferDescriptionDto = (OfferDescriptionDto)OfferDescriptionDto!.Clone(),
+                PlaceDto = (PlaceDto)PlaceDto!.Clone(),
+                OrganizationShortDto = (OrganizationShortDto)OrganizationShortDto!.Clone()
+            };
+        }
     }
 }

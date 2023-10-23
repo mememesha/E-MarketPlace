@@ -152,9 +152,9 @@ public class RabbitMqService : IRabbitMqService
             body: messageBytes);
     }
 
-    public void RpcProduce(string message, BasicDeliverEventArgs args, string exchange)
-    {    
-        var messageBytes = Encoding.UTF8.GetBytes(message);
+    public void RpcProduce(string? message, BasicDeliverEventArgs args, string exchange)
+    {
+        var messageBytes = message != null ? Encoding.UTF8.GetBytes(message) : null;
 
         _channel.BasicPublish(
             exchange: exchange,
@@ -176,7 +176,7 @@ public class RabbitMqService : IRabbitMqService
         };
     }
 
-    public Task<string> RpcCallAsync(string exchange, string message)
+    public Task<string> RpcCallAsync(string exchange, string? message = null)
     {
         var rpcClient = RpcClients.GetValueOrDefault(exchange);
         return rpcClient!.CallAsync(message);

@@ -1,6 +1,7 @@
 @page "/search"
 
 @using EM.UI.Blazor.Services
+@using EM.Dto
 
 @inject SearchService _searchService
 
@@ -8,18 +9,30 @@
 
 @attribute [AllowAnonymous]
 
-<p>Query: @_searchService.Query</p>
+<div class="container">
 
-<p>Response: @_response</p>
-
+    @if (_response == null)
+    {
+        <div class="d-flex align-content-center justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Ищу...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <OffersColums Header="@("Результаты поиска по запросу: " + _searchService.Query)" Offers="@_response"
+        EmptyMessage="Ничего не найдено. Сорян =(" />
+    }
+</div>
 
 @code {
-    private string? _response = "Loading...";
+    private List<OfferShortResponseDto>? _response;
 
     protected override async Task OnInitializedAsync()
     {
         _searchService.OnSearch += OnSearchExecute;
-        _response = await _searchService.GetSearchAsync();
+        _response = await _searchService.GetSearchResultAsync();
     }
 
     public void Dispose()
@@ -29,7 +42,7 @@
 
     private async void OnSearchExecute()
     {
-        _response = await _searchService.GetSearchAsync();
+        _response = await _searchService.GetSearchResultAsync();
         StateHasChanged();
     }
 

@@ -1,0 +1,60 @@
+@inject HttpClient Client
+@inject IOptions<WebApiOptions> Options
+
+<div class="container mb-0" style="height: 350px;">
+    <div>
+        @if (_locations != null)
+        {
+            <div class="row" style="height: 300px; overflow:scroll; -webkit-overflow-scrolling: touch;">
+                <EditForm Model="@_selectedLocation">
+                    <InputRadioGroup @bind-Value="_selectedLocation">
+                        @foreach (var location in _locations)
+                        {
+                            <InputRadio id="@location" Value="@location" />
+                            <label for="@location">@location</label>
+                            <br>
+                        }
+                    </InputRadioGroup>
+                </EditForm>
+            </div>
+        }
+        else
+        {
+            <div>
+                @("Загрузка...")
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-between pb-3">
+        <button onclick="@OnSelectClick" class="btn btn-primary">Выбрать</button>
+        <button onclick="@ModalInstance!.CancelAsync" class="btn btn-secondary">Отмена</button>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    BlazoredModalInstance? ModalInstance { get; set; }
+
+    private List<string>? _locations;
+
+    private string? _selectedLocation;
+
+    protected override async Task OnInitializedAsync()
+    {
+        @* var response = await _client.GetAsync(_options.Value.Ip + _options.Value.GetAllCities!);
+            if (!response.IsSuccessStatusCode)
+            return;
+            _locations = await response.Content.ReadFromJsonAsync<List<string>>(); *@
+
+        _locations = await DataHandler.LoadAsync<List<string>>(Options.Value.Ip + Options.Value.GetAllCities!, Client);
+
+        if (_locations != null)
+            _selectedLocation = _locations.First();
+    }
+
+    private void OnSelectClick(MouseEventArgs obj)
+    {
+        ModalInstance!.CloseAsync(ModalResult.Ok(_selectedLocation!));
+    }
+}

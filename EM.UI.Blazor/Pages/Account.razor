@@ -1,0 +1,144 @@
+@page "/account"
+
+@inject UserService UserService
+
+@attribute [Authorize]
+
+<AuthorizeView>
+    <Authorized>
+        @if (User == null)
+        {
+            <div class="d-flex align-content-center justify-content-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Данные загружаются...</span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="d-flex align-content-center justify-content-center">
+                <h6>Привет, @(User.FirstName + " " + User.LastName)</h6>
+            </div>
+            <hr />
+            <div class="d-flex align-content-center justify-content-center">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pills-account-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-account" type="button" role="tab" aria-controls="pills-account"
+                        aria-selected="true">
+                            Аккаунт
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-organization-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-organization" type="button" role="tab" aria-controls="pills-organization"
+                        aria-selected="false">
+                            Организации
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-offers-tab" data-bs-toggle="pill" data-bs-target="#pills-offers"
+                        type="button" role="tab" aria-controls="pills-offers" aria-selected="false">
+                            Офферы
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-reserves-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-reserves" type="button" role="tab" aria-controls="pills-reserves"
+                        aria-selected="false">
+                            Заказы
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+            <div class="col-12">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active border" id="pills-account" role="tabpanel"
+                        aria-labelledby="pills-account-tab">
+                        <div class="d-flex flex-column">
+                            <h5>Аккаунт ID: @User.Id</h5>
+                            <h5>Фамилия: @User.LastName</h5>
+                            <h5>Имя: @User.FirstName</h5>
+                            <h5>Отчество: @User.MiddleName</h5>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade border" id="pills-organization" role="tabpanel"
+                        aria-labelledby="pills-organization-tab">
+                        Организации
+                        <div class="d-flex flex-column">
+                            @foreach (var userWithRoleDto in User.UserWithRoleDtos!)
+                                {
+                                    <hr />
+                                    <h5>Роль в Организации: @userWithRoleDto.Role</h5>
+                                    <h5>Организация: @userWithRoleDto.OrganizationShortDto!.Name</h5>
+                                    <h5>ИНН: @userWithRoleDto.OrganizationShortDto.INN</h5>
+                                    <h5>ОГРН: @userWithRoleDto.OrganizationShortDto.OGRN</h5>
+                                    <hr />
+                                }
+                            </div>
+                        </div>
+                        <div class="tab-pane fade border" id="pills-offers" role="tabpanel"
+                        aria-labelledby="pills-offers-tab">
+                            <div class="d-flex flex-column">
+                                <OffersColums Header="Все оферы:" Offers="UserOffers" />
+                            </div>
+                        </div>
+                        <div class="tab-pane fade border" id="pills-reserves" role="tabpanel"
+                        aria-labelledby="pills-reserves-tab">
+                            <div class="d-flex flex-row">
+                                @if (UserReserves.Count == 0)
+                                {
+                                    <label>Заказов нет</label>
+                                }
+                                else
+                                {
+                                    @foreach (var reserve in UserReserves)
+                                    {
+                                        var offer = UserOffers.FirstOrDefault(o => o.Id == reserve.OfferId);
+                                        @if (offer != null)
+                                        {
+                                            <div class="pe-2 border">
+                                                <OfferCard Offer="@offer" Reserve="reserve" ButtonsType="CardButtonsType.Approve"
+                                    OnReserveApprove="@ReserveApprove" />
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+    private UserDto? User { get; set; }
+    private List<OfferShortResponseDto>? UserOffers { get; set; }
+    private List<ReserveDto> UserReserves { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateTask!;
+        var user = authState.User;
+
+        if (user.Identity!.IsAuthenticated && await UserService.IsLoaded())
+        {
+            User = UserService.User;
+            UserOffers = UserService.Offers;
+            UserReserves = UserService.Reserves;
+        }
+    }
+
+    private async Task ReserveApprove(ReserveDto reserve)
+    {
+        UserReserves.Remove(reserve);
+        UserService.Reserves.Remove(reserve);
+        StateHasChanged();
+    }
+}

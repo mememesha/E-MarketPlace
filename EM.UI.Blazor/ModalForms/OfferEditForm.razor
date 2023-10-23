@@ -1,0 +1,142 @@
+@inject IOptions<WebApiOptions> Options
+@inject IHttpClientFactory HttpClientFactoryWithJwt
+@inject HttpClient Client
+
+@attribute [Authorize]
+
+<div class="container mb-0" style="height: 550px; width: 550px;">
+    <div>
+        @if (_offer != null)
+        {
+            <div class="row" style="height: 500px; width: 500px; overflow:scroll; -webkit-overflow-scrolling: touch;">
+                <EditForm Model="@_offer">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <p>
+                        <label>
+                            Заголовок:
+                            <InputText @bind-Value="_offer.OfferDescriptionDto.Title" style="width: 300px;" />
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            Описание:
+                            <InputTextArea @bind-Value="_offer.OfferDescriptionDto.Description"
+                            style="height: 300px; width: 300px;" />
+                        </label>
+                    </p>
+
+                    <p>
+                        <label>
+                            Цена:
+                            <InputNumber @bind-Value="_offer.CostOfUnit" style="width: 300px;" />
+                        </label>
+                    </p>
+
+                    <p>
+                        <label>
+                            Категория:
+                            <InputSelect @bind-Value="_offer.OfferDescriptionDto.CategoryDto.Name" style="width: 300px;">
+                                @if (_categories != null)
+                                {
+                                    foreach (var category in _categories)
+                                    {
+                                    <option value="@category.Name">@category.Name</option>
+                                    }
+                                }
+                        </InputSelect>
+                    </label>
+                </p>
+
+                <p>
+                    <label>
+                        Куплю/Продам:
+                        <InputCheckbox @bind-Value="_offer.OfferDescriptionDto.IsSale" style="width: 300px;" />
+                    </label>
+                </p>
+
+                <p>
+                    <label>
+                        Заголовок адреса:
+                        <InputText @bind-Value="_offer.PlaceDto.Title" style="width: 300px;" />
+                    </label>
+                </p>
+
+                <p>
+                    <label>
+                        Описание адреса:
+                        <InputTextArea @bind-Value="_offer.PlaceDto.Description" style="height: 150px; width: 300px;" />
+                    </label>
+                </p>
+
+                <p>
+                    <label>
+                        Регион:
+                        <InputText @bind-Value="_offer.PlaceDto.Region" style="width: 300px;" />
+                    </label>
+                </p>
+
+                <p>
+                    <label>
+                        Город:
+                        <InputText @bind-Value="_offer.PlaceDto.City" style="width: 300px;" />
+                    </label>
+                </p>
+
+                <p>
+                    <label>
+                        Адрес:
+                        <InputText @bind-Value="_offer.PlaceDto.Address" style="width: 300px;" />
+                    </label>
+                </p>
+
+
+            </EditForm>
+        </div>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary" onclick="@OnSubmitClick">Сохранить</button>
+                <button class="btn btn-secondary" onclick="@OnCancelClick">Отмена</button>
+            </div>
+        }
+        else
+        {
+            <div>
+                @("Загрузка...")
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    BlazoredModalInstance? ModalInstance { get; set; }
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private OfferDto? _offer;
+    private List<CategoryDto>? _categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _offer = await DataHandler.LoadAsync<OfferDto>(Options.Value.Ip + Options.Value.GetOfferById! + Id,
+        HttpClientFactoryWithJwt.CreateClient("WebAPI"));
+
+        _categories = await DataHandler.LoadAsync<List<CategoryDto>>(
+        Options.Value.Ip + Options.Value.GetAllCategories!, Client);
+    }
+
+    private async Task OnSubmitClick(MouseEventArgs obj)
+    {
+        await DataHandler.SaveAsync(_offer, Options.Value.Ip + Options.Value.UpdateOffer! + Id,
+        HttpClientFactoryWithJwt.CreateClient("WebAPI"));
+        await ModalInstance!.CloseAsync(ModalResult.Ok(_offer!));
+    }
+
+    private async Task OnCancelClick()
+    {
+        await ModalInstance!.CancelAsync();
+    }
+}

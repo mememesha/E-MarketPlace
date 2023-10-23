@@ -3,6 +3,7 @@ using EM.MicroService.SearchApi.Models;
 using EM.MicroService.SearchApi.Options;
 using Microsoft.Extensions.Options;
 using Nest;
+using EM.Dto;
 
 namespace EM.MicroService.SearchApi.Repository;
 
@@ -14,7 +15,7 @@ public class ElasticRepository : IElasticRepository
     {
         _options = options;
     }
-    
+
     public async Task<string> AddDocument(SearchDocument document)
     {
         var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
@@ -24,7 +25,7 @@ public class ElasticRepository : IElasticRepository
                 m =>
                     m.IndexName(GetElasticIndexName()));
 
-        var client = new ElasticClient(settings); //TODO: Вынести клиента и замокать его в тестах?
+        var client = new ElasticClient(settings);
 
         var response = await client.IndexAsync(document,
             idx => idx.Index(GetElasticIndexName()));
@@ -37,12 +38,40 @@ public class ElasticRepository : IElasticRepository
         return response.Id;
     }
 
-    public async Task<IEnumerable<SearchDocument>> SearchDocuments(
-        string query,
-        string? location,
-        string[]? categories,
-        int from = 0,
-        int size = 10)
+    public async Task<IEnumerable<OfferShortResponseDto>> SearchAsync(string query, string? category)
+    {
+        await Task.Delay(10);
+
+        var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
+
+        var settings = new ConnectionSettings(pool)
+           .DefaultMappingFor<OfferShortResponseDto>(
+               m =>
+                   m.IndexName(_options.Value.SearchIndexPattern));
+
+        var client = new ElasticClient(settings);
+
+        var searchResponse = client.Search<OfferShortResponseDto>(s => s
+            .Query(q => q
+                .Bool(b => b
+                    .Must(mu => mu
+                        .Match(m => m
+                            .Field(f => f.Category)
+                            .Query(category)
+                        ), mu => mu
+                        .Match(m => m
+                            .Field(f => f.Title)
+                            .Query(query)
+                        )
+                    )
+                )
+            )
+        );
+        var resultA = searchResponse.Documents;
+        return resultA;
+    }
+
+    public async Task<IEnumerable<SearchDocument>> SearchDocuments(string query, string? location, string[]? categories)
     {
         var searchResult = new List<SearchDocument>();
 
@@ -55,7 +84,8 @@ public class ElasticRepository : IElasticRepository
 
         var client = new ElasticClient(settings);
 
-        QueryBase elasticQuery = new MatchQuery { Field = "document", Query = query };
+        var elasticQuery = new MatchQuery { Field = "isDeleted", Query = "false" }
+                           && (new MatchQuery { Field = "document", Query = query });
         if (location != null)
         {
             elasticQuery = elasticQuery && new MatchQuery { Field = "location", Query = location };
@@ -72,10 +102,9 @@ public class ElasticRepository : IElasticRepository
 
         var request = new SearchRequest
         {
-            From = from,
-            Size = size,
-            Query = elasticQuery,
-            RequestCache = false
+            From = 0,
+            Size = 10,
+            Query = elasticQuery
         };
 
         var responseSearch = client.Search<SearchDocument>(request);

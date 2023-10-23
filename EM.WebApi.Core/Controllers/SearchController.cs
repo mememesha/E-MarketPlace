@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Nest;
+using EM.Dto;
 
 namespace EM.WebApi.Core.Controllers
 {
@@ -23,7 +24,7 @@ namespace EM.WebApi.Core.Controllers
         {
             _options = options;
         }
-        
+
         /// <summary>
         /// Метод апи поиска
         /// </summary>
@@ -33,58 +34,69 @@ namespace EM.WebApi.Core.Controllers
         /// <returns></returns>
         // [HttpGet, Authorize("write-access")]
         [HttpGet, AllowAnonymous]
-        public async Task<IEnumerable<SearchDocument>> GetSearchResult(
+        public async Task<List<OfferShortResponseDto>?> GetSearchResult(
             [FromQuery(Name = "query")] string query,
             [FromQuery(Name = "location")] string? location,
-            [FromQuery(Name = "category")] string[]? categories)
+            [FromQuery(Name = "category")] string? category)
         {
-            var searchResult = new List<SearchDocument>();
 
-            var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
+            var client = new HttpClient();
+            var response = await client.GetAsync($"https://localhost:6789/api/v1/Search?query={query}&category={category}");
 
-            var settings = new ConnectionSettings(pool)
-                .DefaultMappingFor<SearchDocument>(
-                    m =>
-                        m.IndexName(ElasticSearchSettings.DefaultSearchIndexName));
-            ;
+            if (!response.IsSuccessStatusCode)
+                return new List<OfferShortResponseDto>();
 
-            var client = new ElasticClient(settings);
+            var result = await response.Content.ReadFromJsonAsync<List<OfferShortResponseDto>>();
 
-            var elasticQuery = new MatchQuery {Field = "isDeleted", Query = "false"}
-                               && (new MatchQuery {Field = "title", Query = query}
-                                   || new MatchQuery {Field = "description", Query = query}
-                                   || new MatchQuery {Field = "url", Query = query});
-            if (location != null)
-            {
-                elasticQuery = elasticQuery && new MatchQuery {Field = "location", Query = location};
-            }
+            return result;
 
-            if (categories.Any())
-            {
-                var catQueries = categories
-                    .Select(category => new MatchQuery {Field = "category", Query = category});
-                QueryBase catElasticQuery = null;
-                catElasticQuery = catQueries.Aggregate(catElasticQuery, (current, catQuery) => current || catQuery);
-                elasticQuery = elasticQuery && catElasticQuery;
-            }
+            // var searchResult = new List<SearchDocument>();
 
-            var request = new SearchRequest
-            {
-                From = 0,
-                Size = 10,
-                Query = elasticQuery
-            };
+            // var pool = new SingleNodeConnectionPool(new Uri(_options.Value.Uri!));
 
-            var responseSearch = client.Search<SearchDocument>(request);
+            // var settings = new ConnectionSettings(pool)
+            //     .DefaultMappingFor<SearchDocument>(
+            //         m =>
+            //             m.IndexName(ElasticSearchSettings.DefaultSearchIndexName));
+            // ;
 
-            if (!responseSearch.IsValid)
-            {
-                throw responseSearch.OriginalException;
-            }
-            
-            searchResult.AddRange(responseSearch.Documents);
+            // var client = new ElasticClient(settings);
 
-            return searchResult;
+            // var elasticQuery = new MatchQuery {Field = "isDeleted", Query = "false"}
+            //                    && (new MatchQuery {Field = "title", Query = query}
+            //                        || new MatchQuery {Field = "description", Query = query}
+            //                        || new MatchQuery {Field = "url", Query = query});
+            // if (location != null)
+            // {
+            //     elasticQuery = elasticQuery && new MatchQuery {Field = "location", Query = location};
+            // }
+
+            // if (categories.Any())
+            // {
+            //     var catQueries = categories
+            //         .Select(category => new MatchQuery {Field = "category", Query = category});
+            //     QueryBase catElasticQuery = null;
+            //     catElasticQuery = catQueries.Aggregate(catElasticQuery, (current, catQuery) => current || catQuery);
+            //     elasticQuery = elasticQuery && catElasticQuery;
+            // }
+
+            // var request = new SearchRequest
+            // {
+            //     From = 0,
+            //     Size = 10,
+            //     Query = elasticQuery
+            // };
+
+            // var responseSearch = client.Search<SearchDocument>(request);
+
+            // if (!responseSearch.IsValid)
+            // {
+            //     throw responseSearch.OriginalException;
+            // }
+
+            // searchResult.AddRange(responseSearch.Documents);
+
+            // return searchResult;
         }
 
         /// <summary>
@@ -120,18 +132,18 @@ namespace EM.WebApi.Core.Controllers
             var settings = new ConnectionSettings(pool)
                 .DefaultMappingFor<SearchDocument>(
                 m =>
-                    m.IndexName(ElasticSearchSettings.DefaultSearchIndexName));;
+                    m.IndexName(ElasticSearchSettings.DefaultSearchIndexName)); ;
 
             var client = new ElasticClient(settings);
 
-            var response = await client.IndexAsync(SearchDocument, 
+            var response = await client.IndexAsync(SearchDocument,
                 idx => idx.Index(ElasticSearchSettings.DefaultSearchIndexName));
 
             if (!response.IsValid)
             {
                 throw response.OriginalException;
             }
-            
+
             return SearchDocument.DocumentId.ToString();
         }
     }

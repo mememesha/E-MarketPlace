@@ -1,0 +1,33 @@
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS base
+WORKDIR /app
+EXPOSE 5190
+
+ENV ASPNETCORE_URLS=http://+:5190
+
+# Creates a non-root user with an explicit UID and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
+#RUN curl -ks  http://pki.mts.ru/class2root.crt -o /usr/local/share/ca-certificates/class2root.crt && /usr/sbin/update-ca-certificates
+WORKDIR /src
+COPY ["EM.MicroService.Organizations/EM.MicroService.Organizations.csproj", "EM.MicroService.Organizations/"]
+COPY ["EM.Contracts/EM.Contracts.csproj", "EM.Contracts/"]
+COPY ["EM.Dto/EM.Dto.csproj", "EM.Dto/"]
+COPY ["EM.Shared/EM.Shared.csproj", "EM.Shared/"]
+RUN dotnet restore "EM.MicroService.Organizations/EM.MicroService.Organizations.csproj"
+COPY ["EM.MicroService.Organizations", "EM.MicroService.Organizations"]
+COPY ["EM.Contracts", "EM.Contracts"]
+COPY ["EM.Dto", "EM.Dto"]
+COPY ["EM.Shared", "EM.Shared"]
+WORKDIR "/src/EM.MicroService.Organizations"
+RUN dotnet build "EM.MicroService.Organizations.csproj" -c Release -o /app/build --no-restore
+
+FROM build AS publish
+RUN dotnet publish "EM.MicroService.Organizations.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "EM.MicroService.Organizations.dll"]

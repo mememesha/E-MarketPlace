@@ -1,0 +1,49 @@
+@using Blazored.LocalStorage
+@inject BasketService BasketService
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+
+<button type="button" class="btn btn-outline-light position-relative" onclick="@OnBasketButtonClick">
+    <span class="oi oi-basket"></span>
+    @if (_itemsInBasket > 0)
+    {
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            @_itemsInBasket
+        </span>
+    }
+</button>
+
+@code {
+
+
+    private int _itemsInBasket = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // #if DEBUG
+        // // Delay в секунду для старта прокси-дебагера в браузере
+        // // https://docs.microsoft.com/en-us/aspnet/core/blazor/debug?view=aspnetcore-6.0&tabs=visual-studio#troubleshoot=
+        // await Task.Delay(1000);
+        // #endif
+
+        BasketService.Items = await LocalStorage.GetItemAsync<List<BasketItem>>("EM.BasketService.BasketItems") ?? new();
+        BasketService.AddedOrRemove += OnAddedOrRemove;
+        _itemsInBasket = BasketService.Count;
+    }
+
+    private void OnAddedOrRemove()
+    {
+        _itemsInBasket = BasketService.Count;
+        StateHasChanged();
+    }
+
+    private void OnBasketButtonClick()
+    {
+        NavigationManager.NavigateTo("basket");
+    }
+
+    public void Dispose()
+    {
+        BasketService.AddedOrRemove -= OnAddedOrRemove;
+    }
+}

@@ -1,0 +1,35 @@
+<div class="card-footer bg-light" style="cursor: default;">
+    <button class="btn btn-info col-12" onclick="@OnApproveReserveButtonClock">
+        <div class="oi oi-task"></div>
+        Подтвердить заказ
+    </button>
+</div>
+
+@code {
+    [CascadingParameter]
+    public IModalService? Modal { get; set; }
+
+    [Parameter]
+    public ReserveDto Reserve { get; set; }
+
+    [Parameter]
+    public OfferShortResponseDto Offer { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnReserveApprove { get; set; }
+
+    private async Task OnApproveReserveButtonClock(MouseEventArgs obj)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(ApproveReserve.Item), Offer!.Title);
+        parameters.Add(nameof(ApproveReserve.Count), Reserve!.Count);
+
+        var approveReserveModal = Modal!.Show<ApproveReserve>("Подтверждение заказа", parameters);
+        var result = await approveReserveModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await OnReserveApprove.InvokeAsync((bool)result.Data);
+        }
+    }
+}

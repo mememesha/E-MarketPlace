@@ -11,7 +11,7 @@ COPY ["EM.WebApi.Core/EM.WebApi.Core.csproj", "EM.WebApi.Core/"]
 RUN dotnet restore "EM.WebApi.Core/EM.WebApi.Core.csproj"
 COPY . .
 WORKDIR "/src/EM.WebApi.Core"
-RUN dotnet build "EM.WebApi.Core.csproj" -c Release -o /app/build
+RUN dotnet build "EM.WebApi.Core.csproj" -c Release -o /app/build --no-restore
 
 FROM build AS publish
 RUN dotnet publish "EM.WebApi.Core.csproj" -c Release -o /app/publish

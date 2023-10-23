@@ -1,0 +1,171 @@
+@page "/basket"
+
+@inject BasketService BasketService
+@inject UserService UserService
+@inject IOptions<WebApiOptions> Options
+@inject IHttpClientFactory HttpClientFactoryWithJwt
+
+@attribute [AllowAnonymous]
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-flex justify-content-center">
+            <h5>Корзина</h5>
+        </div>
+    </div>
+    @if (_itemsInBasket == 0)
+    {
+        @if (_isUserLoaded)
+        {
+            @if (_reservesMakingFinished)
+            {
+                <div class="d-flex justify-content-center">
+                    <p>Все заказы размещены</p>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex justify-content-center">
+                    <p>Корзина пуста =(. Нужно срочно это исправить!</p>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="d-flex align-content-center justify-content-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Загрузка...</span>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-8 col-sm-12">
+                <OffersColums Offers="@BasketService.ToOfferShortResponseDtoList" />
+            </div>
+            <div class="col-lg-4">
+                <div class="sticky-top justify-content-center mt-3 mt-lg-0 mb-2 mb-lg-0" style="top: 4rem; z-index: 0;">
+                    <div class="row">
+                        <ol class="list-group list-group-numbered">
+                            @foreach (var item in BasketService.Items)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">@item.Item!.Title</div>
+                                        <div class="fw-light">
+                                            @string.Format(new CultureInfo("ru-RU", false), "Цена за единицу: {0:C}",
+                                    item.Item.CostOfUnit)
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4>
+                                            <span class="badge bg-primary rounded-pill">
+                                                @string.Format(new CultureInfo("ru-RU", false), "{0:C}",
+                                        item.Item.CostOfUnit * item.Count)
+                                            </span>
+                                        </h4>
+                                    </div>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                    <div class="d-flex justify-content-between align-content-center pt-3">
+                        <div>
+                            <h5>
+                                @string.Format(new CultureInfo("ru-RU", false), "Итого: {0:C}",
+                            BasketService.TotalCost)
+                            </h5>
+                        </div>
+                        <div>
+                            <AuthorizeView>
+                                <Authorized>
+                                    <button class="btn btn-primary" onclick="@OnMakeReservesClick">
+                                        Разместить заказ(ы)
+                                    </button>
+                                </Authorized>
+                                <NotAuthorized>
+                                    <a href="authentication/login" class="btn btn-primary">
+                                        Войти/Зарегистрироваться
+                                    </a>
+                                </NotAuthorized>
+                            </AuthorizeView>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code
+{
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+
+    private int _itemsInBasket;
+    private bool _isUserLoaded;
+    private bool _reservesMakingFinished;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        #if DEBUG
+            // Delay в секунду для старта прокси-дебагера в браузере
+            // https://docs.microsoft.com/en-us/aspnet/core/blazor/debug?view=aspnetcore-6.0&tabs=visual-studio#troubleshoot=
+            await Task.Delay(1000);
+            #endif 
+        try
+        {
+            var aa = await AuthenticationStateTask!;
+        }
+        catch (System.Exception)
+        {
+            _isUserLoaded = true;
+            _reservesMakingFinished = true;
+            throw;
+        }
+        var authState = await AuthenticationStateTask!;
+        var user = authState.User;
+
+        if (user.Identity!.IsAuthenticated && await UserService.IsLoaded())
+        {
+            foreach (var offer in UserService.Offers!.Where(offer => BasketService.Items.Any(i => i.Item!.Id == offer.Id)))
+            {
+                await BasketService.RemoveAsync(offer);
+            }
+            _isUserLoaded = true;
+        }
+        else
+            _isUserLoaded = true;
+
+        BasketService.AddedOrRemove += OnAddedOrRemove;
+        _itemsInBasket = BasketService.Count;
+    }
+
+    private void OnAddedOrRemove()
+    {
+        _itemsInBasket = BasketService.Count;
+        StateHasChanged();
+    }
+
+    private async Task OnMakeReservesClick()
+    {
+        var client = HttpClientFactoryWithJwt.CreateClient("WebAPI");
+        foreach (var basketItem in BasketService.Items)
+        {
+            var added = await DataHandler.AddAsync(new ReserveRequestDto
+            {
+                OfferId = basketItem.Item!.Id,
+                Count = basketItem.Count,
+                //TODO нужно сделать окно выбора организации
+                ReserveOwnerId = UserService.User!.UserWithRoleDtos!.First()!.OrganizationShortDto!.Id
+            }, Options.Value.Ip + Options.Value.AddReserve,
+            client);
+        }
+        await BasketService.Clear();
+        _reservesMakingFinished = true;
+    }
+}

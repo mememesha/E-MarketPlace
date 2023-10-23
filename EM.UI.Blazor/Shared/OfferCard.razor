@@ -1,0 +1,91 @@
+@inject NavigationManager NavigationManager
+@inject BasketService BasketService
+
+<div class="card text-left border border-1 " style="width: 17rem; cursor: pointer;">
+
+    <div class="d-flex align-items-center" onclick="@OnCardClick">
+        <img src="@Offer!.Image" class="card-img-top img-fluid" alt="Card image cap"
+            style="width: 100%; height: 20vh; object-fit: contain;">
+    </div>
+
+    <div class="card-body d-flex align-items-start flex-column" onclick="@OnCardClick">
+        <h5 class="card-title">@Offer.Title</h5>
+        <p class="card-text mb-auto">
+            @string.Format(new CultureInfo("ru-RU", false), "Цена: {0:C}", Offer.CostOfUnit)
+        </p>
+    </div>
+    <AuthorizeView>
+        <Authorized>
+            @switch (ButtonsType)
+            {
+                case CardButtonsType.Edit:
+                    <OfferCardEditButton Id="@Offer.Id" OnOfferChanged="@OfferChanged" />
+                    break;
+                case CardButtonsType.Approve:
+                    <OfferCardApproveButton Reserve="@Reserve" Offer="@Offer" OnReserveApprove="@ReserveApprove" />
+                    break;
+                case CardButtonsType.Basket:
+                default:
+                    <OfferCardBasketButtons Offer="@Offer" />
+                    break;
+            }
+            @* @if (ButtonsType == CardButtonsType.Edit)
+                {
+                <OfferCardEditButton Id="@Offer.Id" OnOfferChanged="@OfferChanged" />
+                }
+                else
+                {
+                <OfferCardBasketButtons Offer="@Offer" />
+                } *@
+        </Authorized>
+        <NotAuthorized>
+            <OfferCardBasketButtons Offer="@Offer" />
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public IModalService? Modal { get; set; }
+
+    [Parameter]
+    public OfferShortResponseDto? Offer { get; set; }
+
+    [Parameter]
+    public ReserveDto? Reserve { get; set; }
+
+    [Parameter]
+    public EventCallback<OfferShortResponseDto> OnOfferChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<ReserveDto> OnReserveApprove { get; set; }
+
+    [Parameter]
+    public CardButtonsType? ButtonsType { get; set; }
+
+    private void OnCardClick(MouseEventArgs obj)
+    {
+        NavigationManager.NavigateTo("offer/" + Offer!.Id);
+    }
+
+    private async Task OfferChanged(OfferDto newOffer)
+    {
+        Offer = new OfferShortResponseDto()
+        {
+            Id = newOffer.Id,
+            Title = newOffer.OfferDescriptionDto!.Title,
+            Category = newOffer.OfferDescriptionDto.CategoryDto!.Name,
+            CostOfUnit = newOffer.CostOfUnit,
+            Image = newOffer.OfferDescriptionDto.Image
+        };
+        await OnOfferChanged.InvokeAsync(Offer);
+        StateHasChanged();
+    }
+
+    private async Task ReserveApprove(bool result)
+    {
+        await OnReserveApprove.InvokeAsync(Reserve);
+        StateHasChanged();
+    }
+}

@@ -2,6 +2,7 @@
 using EM.MicroService.SearchApi.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using EM.Dto;
 
 namespace EM.MicroService.SearchApi.Controllers
 {
@@ -11,14 +12,9 @@ namespace EM.MicroService.SearchApi.Controllers
     {
         private readonly IElasticRepository _elasticRepository;
 
-        private ILogger<SearchController> _logger;
-        
-        public SearchController(
-            IElasticRepository elasticRepository,
-            ILogger<SearchController> logger)
+        public SearchController(IElasticRepository elasticRepository)
         {
             _elasticRepository = elasticRepository;
-            _logger = logger;
         }
 
         /// <summary>
@@ -30,19 +26,14 @@ namespace EM.MicroService.SearchApi.Controllers
         /// <returns></returns>
         // [HttpGet, Authorize("write-access")]
         [HttpGet, AllowAnonymous]
-        public async Task<IEnumerable<SearchDocument>> GetSearchResult(
+        public async Task<IEnumerable<OfferShortResponseDto>> GetSearch(
             [FromQuery(Name = "query")] string query,
             [FromQuery(Name = "location")] string? location,
-            [FromQuery(Name = "category")] string[]? categories,
-            [FromQuery(Name = "from")] int from = 0,
-            [FromQuery(Name = "size")] int size = 10)
+            [FromQuery(Name = "category")] string? category)
         {
-            return await _elasticRepository.SearchDocuments(
-                query,
-                location,
-                categories,
-                from,
-                size);
+            var result = await _elasticRepository.SearchAsync(query, category);
+            return result;
+            // return await _elasticRepository.SearchDocuments(query, location, categories);
         }
 
         /// <summary>
@@ -65,12 +56,7 @@ namespace EM.MicroService.SearchApi.Controllers
                 Location = location,
             };
 
-            var documentId = await _elasticRepository.AddDocument(SearchDocument);
-            
-            _logger.LogInformation($"Document with [{documentId}] has been added");
-
-            return documentId;
-
+            return await _elasticRepository.AddDocument(SearchDocument);
         }
 
         // delete document
@@ -87,17 +73,12 @@ namespace EM.MicroService.SearchApi.Controllers
             try
             {
                 await _elasticRepository.DeleteDocuments(documentId);
-                _logger.LogInformation($"Document with [{documentId}] has been deleted");
-                
                 return $"[{documentId}] has been deleted";
             }
             catch (Exception e)
             {
-                _logger.LogError($"Document with [{documentId}] can not be deleted: {e}");
-                
                 throw new HttpRequestException($"Can not delete [{documentId}] document", e);
             }
-
         }
     }
 }

@@ -1,0 +1,109 @@
+@page "/offer/{id:guid}"
+
+@attribute [AllowAnonymous]
+
+@inject IOptions<WebApiOptions> Options
+@inject UserService UserService
+@inject HttpClient Client
+
+@if (OfferDto != null)
+{
+    <div>
+    <h5>@(OfferDto.OfferDescriptionDto!.IsSale ? "Куплю" : "Продам")</h5>
+    <hr />
+
+    <img class="img-fluid" src="@OfferDto.OfferDescriptionDto.Image" alt="" />
+    <hr />
+
+    <h3>Название товара</h3>
+    <h6>@OfferDto.OfferDescriptionDto.Title</h6>
+    <span class="badge bg-primary">@OfferDto.OfferDescriptionDto.CategoryDto!.Name</span>
+    <hr />
+
+    <h5>Описание товара</h5>
+    <p>@OfferDto.OfferDescriptionDto.Description</p>
+    <hr />
+
+    <h5>Организиция</h5>
+    <p>@OfferDto.OrganizationShortDto!.Name</p>
+    <p>@($"ИНН: {OfferDto.OrganizationShortDto.INN}")</p>
+    <p>@($"ОГРН: {OfferDto.OrganizationShortDto.OGRN}")</p>
+    <hr />
+
+    <h5>Адрес</h5>
+    <p>@(OfferDto.PlaceDto!.Region + " " + OfferDto.PlaceDto.City + " " + OfferDto.PlaceDto.Address)</p>
+    <hr />
+
+    <h5>Цена товара</h5>
+    <p>@string.Format(new CultureInfo("ru-RU", false), "Цена: {0:C}", OfferDto.CostOfUnit)</p>
+    <hr />
+
+    <AuthorizeView>
+        <Authorized>
+            @if (IsOwner)
+                {
+                    <OfferCardEditButton Id="@Id" OnOfferChanged="@OfferChanged" />
+                }
+                else
+                {
+                    <OfferCardBasketButtons Offer="@(new OfferShortResponseDto {
+                                                       Id = OfferDto.Id, 
+                                                       Title = OfferDto.OfferDescriptionDto.Title, 
+                                                       Category = OfferDto.OfferDescriptionDto.CategoryDto.Name, 
+                                                       CostOfUnit = OfferDto.CostOfUnit, 
+                                                       Image = OfferDto.OfferDescriptionDto.Image})" />
+                }
+            </Authorized>
+            <NotAuthorized>
+                <OfferCardBasketButtons Offer="@(new OfferShortResponseDto(){
+                                                   Id = OfferDto.Id, 
+                                                   Title = OfferDto.OfferDescriptionDto.Title, 
+                                                   Category = OfferDto.OfferDescriptionDto.CategoryDto.Name,
+                                                   CostOfUnit = OfferDto.CostOfUnit,
+                                                   Image = OfferDto.OfferDescriptionDto.Image})" />
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+}
+else
+{
+    <div class="d-flex align-content-center justify-content-center">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Загрузка...</span>
+    </div>
+</div>
+}
+
+@code {
+
+    [CascadingParameter]
+    public IModalService? Modal { get; set; }
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private OfferDto? OfferDto { get; set; }
+
+    private bool IsOwner { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateTask!;
+        var user = authState.User;
+
+        if (user.Identity!.IsAuthenticated && await UserService.IsLoaded())
+            IsOwner = UserService.Offers!.Any(o => o.Id == Id);
+
+        OfferDto = await DataHandler.LoadAsync<OfferDto>( Options.Value.Ip +
+        Options.Value.GetOfferById! + Id, Client) ;
+    }
+
+    private void OfferChanged(OfferDto newOffer)
+    {
+        OfferDto = newOffer;
+        StateHasChanged();
+    }
+}

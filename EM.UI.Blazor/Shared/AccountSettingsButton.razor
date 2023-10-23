@@ -1,0 +1,17 @@
+@inject NavigationManager _navigation
+
+<AuthorizeView>
+    <Authorized>
+        <button class="btn btn-outline-light" @onclick="OnAccountButtonClick">
+            <i class="oi oi-person"></i>
+        </button>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+    private void OnAccountButtonClick()
+    {
+        _navigation.NavigateTo("account");
+    }
+}

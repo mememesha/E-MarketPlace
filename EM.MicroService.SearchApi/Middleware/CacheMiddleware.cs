@@ -8,7 +8,7 @@ public class CacheMiddleware
     private readonly IDistributedCache _distributedCache;
     private readonly RequestDelegate _next;
     private static readonly DistributedCacheEntryOptions distributedCacheEntryOptions
-            = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(2));
+            = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(10));
     public CacheMiddleware(RequestDelegate next, IDistributedCache distributedCache)
     {
         _next = next;
@@ -28,8 +28,8 @@ public class CacheMiddleware
             }
             else
             {
-                var responseStream = context.Response.Body;
-                var ms = new MemoryStream();
+                using var responseStream = context.Response.Body;
+                using var ms = new MemoryStream();
                 context.Response.Body = ms;
 
                 await _next.Invoke(context);

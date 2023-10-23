@@ -17,6 +17,8 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using AISGorod.AspNetCore.Authentication.Esia;
+using EM.IdentityServer4.Esia;
 // #endif
 
 namespace EM.IdentityServer4
@@ -37,7 +39,7 @@ namespace EM.IdentityServer4
             services.AddControllersWithViews();
 
             var postgresConnectionString = Configuration.GetConnectionString("PostgresConnection");
-            
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(postgresConnectionString));
 
@@ -74,8 +76,18 @@ namespace EM.IdentityServer4
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
-            
-            services.AddAuthentication()
+
+            services
+                .AddAuthentication()
+                .AddEsia("Esia", options =>
+                {
+                    options.Environment = EsiaEnvironmentType.Test;
+                    options.SecurityTokenValidator = new CustomSecurityTokenValidator();
+                    options.Mnemonic = "EKAP01";
+                    options.Scope = new[] { "fullname", "email" };
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    options.SaveTokens = true;
+                })
                 .AddGoogle(options =>
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
@@ -92,14 +104,19 @@ namespace EM.IdentityServer4
                     p => p.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()));
+
+
+            services.AddSingleton<IEsiaSigner, OpensslEsiaSigner>();
+            services.AddHttpContextAccessor();
         }
+
 
         public void Configure(IApplicationBuilder app)
         {
-// #if DEBUG
+            // #if DEBUG
             InitializeDatabase(app);
-// #endif
-            
+            // #endif
+
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -111,13 +128,13 @@ namespace EM.IdentityServer4
             app.UseRouting();
 
             app.UseCors("AllowAll");
-            
+
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
         }
 
-// #if DEBUG
+        // #if DEBUG
         private void InitializeDatabase(IApplicationBuilder app)
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
@@ -167,6 +184,6 @@ namespace EM.IdentityServer4
                 }
             }
         }
-// #endif
+        // #endif
     }
 }

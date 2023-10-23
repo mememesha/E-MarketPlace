@@ -1,19 +1,16 @@
-@using EM.UI.Blazor.Services
-@using EM.UI.Blazor.Settings
-@using Microsoft.Extensions.Options
-
-@inject NavigationManager _navigationManager
-@inject SearchService _searchService
-@inject LocationService _locationService
-@inject IOptions<WebApiOptions> _options
+@inject NavigationManager NavigationManager
+@inject SearchService SearchService
+@inject IOptions<WebApiOptions> Options
+@inject HttpClient Client
 
 <div class="input-group">
-    <select class="form-select d-md-block d-none" @bind="_searchService.Category" style="max-width: 200px;">
+
+    <select class="form-select d-md-block d-none" @bind="SearchService.Category" style="max-width: 200px;">
         @if (_categories != null)
         {
-            @foreach (var (key, value) in _categories!)
+            @foreach (var category in _categories)
             {
-                <option value="@key">@value</option>
+                <option value="@category.Name">@category.Name</option>
             }
         }
         else
@@ -21,15 +18,17 @@
             <option>Загрузка...</option>
         }
     </select>
-    <input type="search" class="form-control" placeholder="Я ищу..." @bind="_searchService.Query" @bind:event="oninput"
+
+    <input type="search" class="form-control" placeholder="Я ищу..." @bind="SearchService.Query" @bind:event="oninput"
         @onkeypress="OnEnterKeyPress">
-    <div class="input-group-text d-flex d-md-block d-none" style="background-color: #fff; cursor: pointer;" 
-        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+
+    <div class="input-group-text d-flex d-md-block d-none" style="background-color: #fff; cursor: pointer;"
+        onclick="@OnLocationClick">
         <span class="oi oi-compass pe-1"></span>
         <label style="cursor: pointer;">
-            @if (_searchService.Location != null)
+            @if (SearchService.Location != null)
             {
-                @_searchService.Location
+                @SearchService.Location
             }
             else
             {
@@ -37,36 +36,29 @@
             }
         </label>
     </div>
+
     <button class="btn btn-outline-light" type="button" @onclick="OnSearchButtonClick">Поиск</button>
+
 </div>
 
 
 @code {
+    [CascadingParameter]
+    public IModalService? Modal { get; set; }
 
-    private Dictionary<string, string>? _categories;
+    private List<CategoryDto>? _categories;
 
     protected override async Task OnInitializedAsync()
     {
-        
-#if DEBUG
-// Delay в секунду для старта прокси-дебагера в браузере
-// https://docs.microsoft.com/en-us/aspnet/core/blazor/debug?view=aspnetcore-6.0&tabs=visual-studio#troubleshoot=
-await Task.Delay(1000);
-#endif
 
-        _searchService.Location = await _locationService.GetCityAsync();
+        SearchService.Location = await DataHandler.LoadAsync(
+        Options.Value.Ip + Options.Value.GetCityFromIp, Client);
 
-        var client = new HttpClient();
+        _categories = await DataHandler.LoadAsync<List<CategoryDto>>(
+        Options.Value.Ip + Options.Value.GetAllCategories!, Client);
 
-        var response = await client.GetAsync(_options.Value.Ip + _options.Value.GetAllCategories!);
-
-        if (!response.IsSuccessStatusCode)
-            return;
-
-        _categories = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-
-        if (_categories != null)
-            _searchService.Category = _categories.Keys.First();
+        if (_categories != null && _categories.Count > 0)
+            SearchService.Category = _categories.First().Name;
     }
 
     private void OnEnterKeyPress(KeyboardEventArgs args)
@@ -77,19 +69,28 @@ await Task.Delay(1000);
 
     private void OnSearchButtonClick()
     {
-        if (string.IsNullOrEmpty(_searchService.Query))
+        if (string.IsNullOrEmpty(SearchService.Query))
             return;
 
         try
         {
-            _navigationManager.NavigateTo("search?" + _searchService.GetQuery());
-            _searchService.OnSearchExecute();
+            NavigationManager.NavigateTo("search?" + SearchService.GetQuery());
+            SearchService.OnSearchExecute();
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
+    }
+
+    private async Task OnLocationClick()
+    {
+        var locationModal = Modal!.Show<LocationSelect>("Выберите город");
+        var result = await locationModal.Result;
+
+        if (!result.Cancelled)
+            SearchService.Location = result.Data.ToString();
     }
 
 }

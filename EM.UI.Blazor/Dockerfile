@@ -8,7 +8,7 @@ COPY ["EM.Dto/EM.Dto.csproj", "EM.Dto/"]
 RUN dotnet restore "EM.UI.Blazor/EM.UI.Blazor.csproj"
 COPY . .
 WORKDIR "/src/EM.UI.Blazor"
-RUN dotnet build "EM.UI.Blazor.csproj" -c Release -o /app/build
+RUN dotnet build "EM.UI.Blazor.csproj" -c Release -o /app/build --no-restore
 
 FROM build AS publish
 RUN dotnet publish "EM.UI.Blazor.csproj" -c Release -o /app/publish

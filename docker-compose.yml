@@ -2,35 +2,35 @@ version: '3.4'
 
 services:
 
+# UI
   blazor:
     build:
+      context: .
       dockerfile: Dockerfile.UI.Blazor
     image: registry.gitlab.com/chil84/otusaspnetcorea02team02/ui.blazor:0.0.1
     ports:
       - "443:443"
       - "80:80"
-      
+
+# API
   webapi:
-    build: 
+    build:
+      context: .
       dockerfile: Dockerfile.WebApi.Core
     image: registry.gitlab.com/chil84/otusaspnetcorea02team02/webapi.core:0.0.1
     restart: always
     depends_on:
       - elasticsearch
+      - rabbitmq
     environment:
+      RabbitMqOptions__HostName: rabbitmq
       ElasticsearchOptions__Uri : "http://elasticsearch:9200"
       IS4__Uri : "https://is4:10001"
       IS4__Audience : "weatherapi"
     ports:
       - "7890:7890"
 
-  elasticsearch:
-    image: elasticsearch:7.16.3
-    environment:
-      - discovery.type=single-node
-    volumes:
-      - elastic_volume:/usr/share/elasticsearch/data
-
+# Microservices
   is4:
     build: EM.IdentityServer4
     image: registry.gitlab.com/chil84/otusaspnetcorea02team02/is4:0.0.1
@@ -41,9 +41,112 @@ services:
       - "10001:10001"
     environment:
       ConnectionStrings__PostgresConnection: "Server=postgres;Port=5432;Database=is4;Username=user;Password=password"
-      
+
+  fakedata:
+    build:
+      context: .
+      dockerfile: Dockerfile.FakeData
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/fakedata:0.0.1
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      RabbitMqOptions__HostName: rabbitmq
+
+  location:
+    build:
+      context: .
+      dockerfile: Dockerfile.Location
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/location:0.0.1
+    restart: always
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      RabbitMqOptions__HostName: rabbitmq
+      ConnectionStrings__Location: "Server=postgres;Port=5432;Database=location;Username=user;Password=password"
+
+
+  offers:
+    build:
+      context: .
+      dockerfile: Dockerfile.Offers
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/offers:0.0.1
+    restart: always
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      RabbitMqOptions__HostName: rabbitmq
+      ConnectionStrings__Offers: "Server=postgres;Port=5432;Database=offers;Username=user;Password=password"
+
+
+  organizations:
+    build:
+      context: .
+      dockerfile: Dockerfile.Organizations
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/organizations:0.0.1
+    restart: always
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      RabbitMqOptions__HostName: rabbitmq
+      ConnectionStrings__Organizations: "Server=postgres;Port=5432;Database=organizations;Username=user;Password=password"
+
+  reserves:
+    build:
+      context: .
+      dockerfile: Dockerfile.Reserves
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/reserves:0.0.1
+    restart: always
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      RabbitMqOptions__HostName: rabbitmq
+      ConnectionStrings__Reserves: "Server=postgres;Port=5432;Database=reserves;Username=user;Password=password"
+
+  users:
+    build:
+      context: .
+      dockerfile: Dockerfile.Users
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/users:0.0.1
+    restart: always
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      RabbitMqOptions__HostName: rabbitmq
+      ConnectionStrings__Users: "Server=postgres;Port=5432;Database=users;Username=user;Password=password"
+
+  search-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.SearchApi
+    image: registry.gitlab.com/chil84/otusaspnetcorea02team02/search-api:0.0.1
+    restart: always
+    depends_on:
+      - rabbitmq
+      - elasticsearch
+      - is4
+      - redis
+    environment:
+      RabbitMqOptions__HostName: rabbitmq
+      ElasticsearchOptions__Uri:  "http://elasticsearch:9200"
+      IS4__Uri : "https://is4:10001"
+      IS4__Audience : "webapi"
+      RedisSettings__RedisApiUrl: "redis:6379"
+
+
+
+# Database
   postgres:
     image: postgres:14-alpine
+    ports:
+      - '5432:5432'
+    container_name: postgres
+    hostname: postgres
     environment:
       POSTGRES_DB: "is4"
       POSTGRES_USER: "user"
@@ -53,25 +156,38 @@ services:
       - postgres-volume:/var/lib/postgresql/data
 
 
+# Infrastructure
+  elasticsearch:
+    image: elasticsearch:7.16.3
+    container_name: elasticsearch
+    hostname: elasticsearch
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - elastic_volume:/usr/share/elasticsearch/data
+
   rabbitmq:
     image: rabbitmq:3-management
     ports:
       # AMQP protocol port
       - '5672:5672'
       # HTTP management UI
-      - '15672:15672' 
+      - '15672:15672'
+    container_name: rabbitmq
+    hostname: rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=user
       - RABBITMQ_DEFAULT_PASS=password
-      
-  EM-Redis:
+
+  redis:
     image: "redis:latest"
-    container_name: 'EM-Redis'
     restart: always
+    container_name: redis
+    hostname: redis
     ports:
       - "6379:6379"
 
-  
+
 volumes:
   postgres-volume:
     external: false

@@ -1,0 +1,31 @@
+<div class="card-footer bg-light" style="cursor: default;">
+    <button class="btn btn-success col-12" onclick="@OnEditOfferButtonClock">
+        <div class="oi oi-pencil"></div>
+        Изменить
+    </button>
+</div>
+
+@code {
+    [CascadingParameter]
+    public IModalService? Modal { get; set; }
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    [Parameter]
+    public EventCallback<OfferDto> OnOfferChanged { get; set; }
+
+    private async Task OnEditOfferButtonClock(MouseEventArgs obj)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(OfferEditForm.Id), Id);
+
+        var offerEditModal = Modal!.Show<OfferEditForm>("Редактирование офера", parameters);
+        var result = await offerEditModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await OnOfferChanged.InvokeAsync((OfferDto)result.Data);
+        }
+    }
+}

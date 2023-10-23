@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+        <p>Вы действительно подтвержаете заказ на <span class="fw-bold">@Item</span>
+            в количестве <span class="fw-bold">@Count</span> ?
+        </p>
+    </div>
+    <div class="d-flex justify-content-between">
+        <button @onclick="OnYesClick" class="btn btn-primary">Да, подтвержаю</button>
+        <button @onclick="OnNoClick" class="btn btn-secondary">Нет и отменить заказ</button>
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    [Parameter]
+    public string? Item { get; set; }
+
+    [Parameter]
+    public decimal? Count { get; set; }
+
+    async Task OnYesClick() => await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    async Task OnNoClick() => await BlazoredModal.CloseAsync(ModalResult.Ok(false));
+
+}

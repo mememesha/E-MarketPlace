@@ -70,7 +70,7 @@ public class RabbitMqRpcClient
         }
     }
 
-    public Task<string> CallAsync(string message, CancellationToken cancellationToken = default)
+    public Task<string> CallAsync(string? message, CancellationToken cancellationToken = default)
     {
         _channel.ExchangeDeclare(
                 exchange: _rpcCall.Exchange!.Name,

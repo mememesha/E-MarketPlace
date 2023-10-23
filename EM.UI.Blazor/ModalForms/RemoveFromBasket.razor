@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row">
+        <p>Вы действительно хотите удалить из корзины <span class="fw-bold">@Item</span> ?</p>
+    </div>
+    <div class="d-flex justify-content-between">
+        <button @onclick="Remove" class="btn btn-danger">Удалить</button>
+        <button @onclick="Cancel" class="btn btn-secondary">Отмена</button>
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    [Parameter]
+    public string? Item { get; set; }
+
+    async Task Remove() => await BlazoredModal.CloseAsync();
+    async Task Cancel() => await BlazoredModal.CancelAsync();
+
+}
