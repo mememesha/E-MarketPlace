@@ -1,13 +1,14 @@
 ﻿using EM.MicroService.SearchApi.Abstractions;
 using EM.MicroService.SearchApi.Extensions;
 using EM.MicroService.SearchApi.Options;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace EM.MicroService.SearchApi
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -16,19 +17,25 @@ namespace EM.MicroService.SearchApi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddMvcOptions(x=> 
-                x.SuppressAsyncSuffixInActionNames = false);
-            
-            services.AddHttpClient<IDistributedCache, DistributedCache>(client =>
+            services.AddStackExchangeRedisCache(options =>
             {
-                client.BaseAddress = new Uri(Configuration["RedisSettings:RedisApiUrl"]);
-                client.Timeout = TimeSpan.FromMinutes(3);
-            }).ConfigurePrimaryHttpMessageHandler(() =>
-            {
-                var clientHandler = new HttpClientHandler();
-                clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
-                return clientHandler;
+                options.Configuration = Configuration.GetSection("RedisSettings")["RedisApiUrl"];
+                options.InstanceName = "SampleInstance";
             });
+
+            // services.AddControllers().AddMvcOptions(x =>
+            //     x.SuppressAsyncSuffixInActionNames = false);
+
+            // services.AddHttpClient<IDistributedCache, DistributedCache>(client =>
+            // {
+            //     client.BaseAddress = new Uri(Configuration["RedisSettings:RedisApiUrl"]);
+            //     client.Timeout = TimeSpan.FromMinutes(3);
+            // }).ConfigurePrimaryHttpMessageHandler(() =>
+            // {
+            //     var clientHandler = new HttpClientHandler();
+            //     clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+            //     return clientHandler;
+            // });
 
             services.AddControllers().AddNewtonsoftJson();
             services.AddOpenApiDocument(options =>
@@ -36,7 +43,7 @@ namespace EM.MicroService.SearchApi
                 options.Title = "EM API Doc";
                 options.Version = "1.0";
             });
-            
+
             services.Configure<ElasticSearchOptions>(Configuration.GetSection("ElasticSearchOptions"));
             /*var is4Options = Configuration.GetSection("IS4").Get<IS4Options>();
             
@@ -68,7 +75,7 @@ namespace EM.MicroService.SearchApi
             });*/
 
             services.AddCors(
-                options => options.AddPolicy("AllowAll", 
+                options => options.AddPolicy("AllowAll",
                     p => p.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()));
@@ -81,15 +88,15 @@ namespace EM.MicroService.SearchApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseOpenApi();
             app.UseSwaggerUi3(x =>
             {
                 x.DocExpansion = "list";
             });
-            
+
             app.UseHttpsRedirection();
-            
+
             app.UseRouting();
 
             app.UseCors("AllowAll");
@@ -99,7 +106,7 @@ namespace EM.MicroService.SearchApi
 
             app.UseSessionCookie();
             app.UseCache();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
