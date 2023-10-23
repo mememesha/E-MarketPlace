@@ -8,11 +8,12 @@
     <projectFile profileName="SelfHost">EM.IdentityServer4/EM.IdentityServer4.csproj</projectFile>
     <projectFile profileName="EM.WebApi.Core">EM.WebApi.Core/EM.WebApi.Core.csproj</projectFile>
     <projectFile profileName="EM.MicroService.Location">EM.MicroService.Location/EM.MicroService.Location.csproj</projectFile>
+    <projectFile profileName="EM.MicroService.SearchApi">EM.MicroService.SearchApi/EM.MicroService.SearchApi.csproj</projectFile>
+    <projectFile profileName="EM.Redis">EM.Redis/EM.Redis.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d676f5c0-3287-4989-a5f3-feb67be752a8" name="Changes" comment="fix after review">
-      <change beforePath="$PROJECT_DIR$/Dockerfile.UI.Blazor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile.WebApi.Core" beforeDir="false" />
+    <list default="true" id="b9dbe5ee-5674-4a03-81ff-2c011fc8ccc1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.EM/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.EM/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

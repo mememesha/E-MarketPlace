@@ -16,15 +16,15 @@ namespace EM.MicroService.SearchApi.Controllers
     public class SearchController : Controller
     {
         private readonly IOptions<ElasticSearchOptions> _options;
-        // private readonly IDistributedCache _distributedCache;
+        private readonly IDistributedCache _distributedCache;
 
-        public SearchController(IOptions<ElasticSearchOptions> options)
-        // IDistributedCache distributedCache)
+        public SearchController(IOptions<ElasticSearchOptions> options,
+            IDistributedCache distributedCache)
         {
             _options = options;
-            // _distributedCache = distributedCache;
+            _distributedCache = distributedCache;
         }
-
+        
         /// <summary>
         /// Метод апи поиска
         /// </summary>
@@ -52,17 +52,17 @@ namespace EM.MicroService.SearchApi.Controllers
 
             var client = new ElasticClient(settings);
 
-            var elasticQuery = new MatchQuery { Field = "isDeleted", Query = "false" }
-                               && (new MatchQuery { Field = "document", Query = query });
+            var elasticQuery = new MatchQuery {Field = "isDeleted", Query = "false"}
+                               && (new MatchQuery {Field = "document", Query = query});
             if (location != null)
             {
-                elasticQuery = elasticQuery && new MatchQuery { Field = "location", Query = location };
+                elasticQuery = elasticQuery && new MatchQuery {Field = "location", Query = location};
             }
 
             if (categories.Any())
             {
                 var catQueries = categories
-                    .Select(category => new MatchQuery { Field = "category", Query = category });
+                    .Select(category => new MatchQuery {Field = "category", Query = category});
                 QueryBase catElasticQuery = null;
                 catElasticQuery = catQueries.Aggregate(catElasticQuery, (current, catQuery) => current || catQuery);
                 elasticQuery = elasticQuery && catElasticQuery;
@@ -81,9 +81,9 @@ namespace EM.MicroService.SearchApi.Controllers
             {
                 throw responseSearch.OriginalException;
             }
-
+            
             searchResult.AddRange(responseSearch.Documents);
-
+                
             return searchResult;
         }
 
@@ -97,8 +97,8 @@ namespace EM.MicroService.SearchApi.Controllers
         [HttpPost("Add")]
         public async Task<string> AddSearchDocument(
             [FromBody] string document,
-            [FromQuery(Name = "category")] string? category,
-            [FromQuery(Name = "location")] string? location)
+            [FromQuery(Name = "category")] string category,
+            [FromQuery(Name = "location")] string location)
         {
             var SearchDocument = new SearchDocument
             {
@@ -118,17 +118,17 @@ namespace EM.MicroService.SearchApi.Controllers
 
             var client = new ElasticClient(settings);
 
-            var response = await client.IndexAsync(SearchDocument,
+            var response = await client.IndexAsync(SearchDocument, 
                 idx => idx.Index(GetElasticIndexName()));
 
             if (!response.IsValid)
             {
                 throw response.OriginalException;
             }
-
+            
             return SearchDocument.DocumentId.ToString();
         }
-
+        
         private string GetElasticIndexName()
         {
             return string.Format(_options.Value.SearchIndexPattern, DateTime.Now.ToString("yyyy-M"));
